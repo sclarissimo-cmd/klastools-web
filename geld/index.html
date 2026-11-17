@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geld</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Geld</div>
+    <div class="seg" id="modeSeg">
+      <button data-mode="vrij" title="Vrij geld leggen en tellen">Vrij leggen</button>
+      <button data-mode="bedrag" title="Een gegeven bedrag leggen">Bedrag leggen</button>
+      <button data-mode="wissel" title="Wisselgeld teruggeven">Wisselgeld</button>
+    </div>
+    <div class="seg" id="levelSeg">
+      <button data-level="10" title="Munten van 1 en 2 euro, biljetten van 5 en 10 euro">tot &euro; 10</button>
+      <button data-level="100" title="Euro's tot en met het biljet van 50 euro">tot &euro; 100</button>
+      <button data-level="centen" title="Alle munten (1 cent tot 2 euro) en alle biljetten">met centen</button>
+    </div>
+    <span class="grow"></span>
+    <button class="btn small" id="btnTotal" title="Het totaal op het bord tonen of verbergen">Totaal</button>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in">
+      <svg id="board" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="msg" class="msg hidden"></div>
+    </div>
+  </main>
+
+  <footer class="controls">
+    <div class="group" id="taskBedrag">
+      <label class="show-label" for="inAmount">Bedrag &euro;</label>
+      <input id="inAmount" class="money" inputmode="decimal" autocomplete="off">
+    </div>
+    <div class="group" id="taskWissel">
+      <label class="show-label" for="inPrice">Prijs &euro;</label>
+      <input id="inPrice" class="money" inputmode="decimal" autocomplete="off">
+      <label class="show-label" for="inPaid">betaald &euro;</label>
+      <input id="inPaid" class="money" inputmode="decimal" autocomplete="off">
+    </div>
+    <button class="btn" id="btnNew" title="Een nieuw bedrag kiezen">Nieuw</button>
+    <button class="btn" id="btnFewest" title="Enkel juist met zo weinig mogelijk munten en biljetten">Zo weinig mogelijk</button>
+    <button class="btn primary" id="btnCheck">Controleer</button>
+    <button class="btn" id="btnSolve" title="Een oplossing met zo weinig mogelijk stukken op het bord leggen">Oplossing</button>
+    <span class="grow"></span>
+    <button class="btn" id="btnSort" title="Het geld op het bord ordenen van groot naar klein">Ordenen</button>
+    <button class="btn" id="btnClear" title="Al het geld van het bord halen">Leeg</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: rekenen met geld</h2>
+      <p>Laat leerlingen eerst <b>ordenen</b>: de biljetten en grote munten eerst, dan de kleine. Zo tel je makkelijker:
+        "twintig, dertig, vijfendertig, zevenendertig…" Zet het totaal pas aan nadat ze zelf geteld hebben.</p>
+      <p>Bij <b>bedrag leggen</b> zijn er vaak meerdere juiste oplossingen. Vergelijk ze: wie heeft de minste
+        munten en biljetten nodig? Zet daarna "Zo weinig mogelijk" aan.</p>
+      <p>Bij <b>wisselgeld</b> kun je "aanvullen" (de winkelier telt op vanaf de prijs tot het betaalde bedrag)
+        of aftrekken. Laat beide manieren zien.</p>
+      <p class="hint">Klik op geld in de kassa onderaan om het op het bord te leggen, of sleep het. Sleep geld op het
+        bord om het te verplaatsen; klik erop of sleep het terug naar de kassa om het weg te nemen.
+        Typ zelf een bedrag of kies "Nieuw".</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

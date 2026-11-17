@@ -21,5 +21,7 @@ var TOOLS = [
   { map: 'breuken', naam: 'Breuken', rubriek: 'getallen', jaren: [3, 6],
     tekst: 'Chocoladerepen en taarten in gelijke stukken, met de breuk en het percent erbij.' },
   { map: 'klok', naam: 'Klok', rubriek: 'meten', jaren: [1, 4],
-    tekst: 'Wijzerklok en digitale klok samen, met de Vlaamse bewoording: “kwart over drie”.' }
+    tekst: 'Wijzerklok en digitale klok samen, met de Vlaamse bewoording: “kwart over drie”.' },
+  { map: 'geld', naam: 'Geld', rubriek: 'meten', jaren: [1, 6],
+    tekst: 'Geldbordje met euromunten en -biljetten: leggen en tellen, een bedrag leggen met zo weinig mogelijk stukken, wisselgeld teruggeven.' }
 ];
