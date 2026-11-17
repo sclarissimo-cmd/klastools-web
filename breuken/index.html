@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breuken</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Breuken</div>
+    <div class="seg" id="modelSeg">
+      <button data-model="reep">Repen</button>
+      <button data-model="taart">Taarten</button>
+    </div>
+    <div class="stepper">
+      <button id="wholeMin" title="Eén minder" aria-label="Eén minder">&minus;</button>
+      <span class="val" id="wholeVal"></span>
+      <button id="wholePlus" title="Eén meer" aria-label="Eén meer">+</button>
+    </div>
+    <div class="stepper">
+      <button id="denMin" title="Minder stukken" aria-label="Minder stukken">&minus;</button>
+      <span class="val" id="denVal"></span>
+      <button id="denPlus" title="Meer stukken" aria-label="Meer stukken">+</button>
+    </div>
+    <button class="btn small" id="btnEach">Eigen noemer</button>
+    <span class="grow"></span>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in"><svg id="board" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </main>
+
+  <footer class="controls">
+    <div class="palette" id="palette"></div>
+    <span class="sep"></span>
+    <button class="btn" id="btnMin" title="Laatste stuk weg">&minus;1</button>
+    <button class="btn" id="btnPlus" title="Stuk erbij in de gekozen kleur">+1</button>
+    <span class="sep"></span>
+    <button class="btn" id="btnFill" title="Kleur alle lege stukken in de gekozen kleur">Vul</button>
+    <button class="btn" id="btnClear">Leeg</button>
+    <span class="grow"></span>
+    <span class="show-label">Toon</span>
+    <button class="btn" id="btnNum" title="Breuk tonen of verbergen">breuk</button>
+    <button class="btn" id="btnDec" title="Kommagetal tonen of verbergen">0,5</button>
+    <button class="btn" id="btnPct" title="Percent tonen of verbergen">%</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: breuken</h2>
+      <p>Laat eerst benoemen: in hoeveel <b>gelijke</b> stukken is de reep of taart verdeeld? Dat is de
+        <b>noemer</b>. Hoeveel stukken kleuren we? Dat is de <b>teller</b>. Toon pas daarna de breuk.</p>
+      <p>Breuken groter dan 1: neem 2 repen in 4 stukken en kleur er 5. Samen 5/4: één hele reep en nog 1/4.</p>
+      <p>Procenten en kommagetallen: 1/4 van de taart = 0,25 = 25 %, de hele taart = 1 = 100 %. Zet "breuk",
+        "0,5" en "%" los aan of uit. Gebruik twee kleuren om te splitsen: 3/4 = 1/4 + 2/4.</p>
+      <p>Gelijkwaardige breuken: zet "Eigen noemer" aan en geef elke reep zijn eigen noemer met de knopjes
+        ernaast. Kleur 1/2 van de eerste reep en 2/4 van de tweede: even veel chocolade!</p>
+      <p class="hint">Klik op een stuk om het te kleuren. Een stuk in een andere kleur krijgt de gekozen kleur;
+        nog eens klikken maakt het weer leeg.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

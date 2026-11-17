@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klastools – gratis tools voor het digibord</title>
+<meta name="description" content="Gratis tools voor het digibord in het lager onderwijs: timer, stemmen, getalbeelden, honderdveld, breuken, klok. Zonder account, zonder installatie.">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f5fbf">
+<link rel="stylesheet" href="start.css">
+</head>
+<body>
+<header class="kop">
+  <div class="kop-in">
+    <img class="logo" src="logo.svg" alt="">
+    <div>
+      <h1>Klastools</h1>
+      <p class="sub">Gratis tools voor het digibord. Geen account, niets te installeren.</p>
+    </div>
+  </div>
+</header>
+
+<nav class="filter" aria-label="Filter per leerjaar">
+  <div class="filter-in">
+    <span class="filter-label">Leerjaar</span>
+    <div class="chips" id="jaren"></div>
+  </div>
+</nav>
+
+<main id="rubrieken" class="inhoud"></main>
+<p id="leeg" class="leeg hidden">Voor dit leerjaar zijn er nog geen tools.</p>
+
+<footer class="voet">
+  <div class="voet-in">
+    <p><b>Privacy:</b> er gaat niets over je leerlingen naar een server en er wordt niets bewaard. Wat je instelt,
+      onthoudt de browser op deze computer. Enkel bij Stemmen gaan de stemmen (zonder namen) via een berichtendienst.</p>
+    <p><b>Werk je met OpenBoard?</b> Dezelfde tools bestaan als widgets:
+      <a href="https://github.com/sclarissimo-cmd/klastools-download/releases/latest/download/Klastools-voor-OpenBoard-setup.exe">download de installatie</a>.</p>
+    <p class="klein">Gemaakt door <a href="https://claris.be">Claris</a> · <span id="versie"></span></p>
+  </div>
+</footer>
+
+<script src="tools.js"></script>
+<script src="versie.js"></script>
+<script src="start.js"></script>
+</body>
+</html>

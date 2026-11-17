@@ -1,0 +1,11 @@
+{
+  "name": "Klastools",
+  "short_name": "Klastools",
+  "description": "Gratis tools voor het digibord",
+  "lang": "nl",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#1f5fbf",
+  "icons": [{ "src": "logo.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

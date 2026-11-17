@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timer</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Timer</div>
+    <div class="seg" id="modeSeg">
+      <button data-mode="timer" title="Aftellen tot de tijd om is">Timer</button>
+      <button data-mode="stopwatch" title="Optellen: hoe lang duurt het?">Stopwatch</button>
+    </div>
+    <div class="seg" id="viewSeg">
+      <button data-view="digitaal" title="Grote cijfers">Digitaal</button>
+      <button data-view="zandloper" title="Zandloper die leegloopt">Zandloper</button>
+    </div>
+    <span class="grow"></span>
+    <button class="btn small" id="btnSound" title="Geluid als de tijd om is">Geluid aan</button>
+    <button class="btn small" id="btnTone" title="Ander geluid kiezen (je hoort het meteen)">bel</button>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in" id="stageIn">
+      <div class="pane" id="glassPane">
+        <svg id="glass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 440" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div class="pane" id="timerPane">
+        <div class="tbox" id="tbox">
+          <div class="digital" id="tdigital">
+            <div class="dcol" id="colH">
+              <button class="arrow" id="hUp" title="Een uur meer" aria-label="Een uur meer">&#9650;</button>
+              <input id="inH" class="dnum" maxlength="2" inputmode="numeric" autocomplete="off" aria-label="Uren">
+              <button class="arrow" id="hDown" title="Een uur minder" aria-label="Een uur minder">&#9660;</button>
+            </div>
+            <div class="colon" id="colon1">:</div>
+            <div class="dcol">
+              <button class="arrow" id="mUp" title="Een minuut meer" aria-label="Een minuut meer">&#9650;</button>
+              <input id="inM" class="dnum" maxlength="2" inputmode="numeric" autocomplete="off" aria-label="Minuten">
+              <button class="arrow" id="mDown" title="Een minuut minder" aria-label="Een minuut minder">&#9660;</button>
+            </div>
+            <div class="colon">:</div>
+            <div class="dcol">
+              <button class="arrow" id="sUp" title="5 seconden meer" aria-label="5 seconden meer">&#9650;</button>
+              <input id="inS" class="dnum" maxlength="2" inputmode="numeric" autocomplete="off" aria-label="Seconden">
+              <button class="arrow" id="sDown" title="5 seconden minder" aria-label="5 seconden minder">&#9660;</button>
+            </div>
+          </div>
+          <div class="bar" id="bar"><div class="fill" id="barFill"></div></div>
+        </div>
+      </div>
+      <div class="pane" id="swPane">
+        <div class="sw" id="swText">00:00,0</div>
+      </div>
+      <div id="doneMsg" class="done hidden">Tijd om!</div>
+    </div>
+  </main>
+
+  <footer class="controls">
+    <div class="group" id="presets">
+      <span class="show-label">Snel</span>
+      <button class="btn" data-sec="60">1 min</button>
+      <button class="btn" data-sec="120">2 min</button>
+      <button class="btn" data-sec="300">5 min</button>
+      <button class="btn" data-sec="600">10 min</button>
+      <button class="btn" data-sec="900">15 min</button>
+    </div>
+    <span class="grow"></span>
+    <div class="palette" id="palette"></div>
+    <button class="btn" id="btnDigits" title="Cijfers naast de zandloper tonen of verbergen">cijfers</button>
+    <button class="btn" id="btnReset" title="Terug naar de ingestelde tijd">Opnieuw</button>
+    <button class="btn primary start" id="btnStart">Start</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: tijd zichtbaar maken</h2>
+      <p>Jonge kinderen kunnen tijd moeilijk inschatten. De <b>zandloper</b> toont hoeveel tijd er nog is, zonder
+        dat ze de klok moeten kunnen lezen. Laat ze voorspellen: "Is de helft al door?"</p>
+      <p>Met de <b>stopwatch</b> meet je hoe lang iets duurt: opruimen, een rij maaltafels, een looprondje.
+        Probeer het de volgende keer sneller te doen.</p>
+      <p class="hint">Tik de tijd in (uren : minuten : seconden) of gebruik de pijltjes en de snelknoppen. Start, Pauze
+        en Verder met de grote knop. Het geluid zet je bovenaan aan of uit; aanzetten laat het geluid even horen. Ernaast kies je het geluid: bel, schoolbel of ding-dong.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

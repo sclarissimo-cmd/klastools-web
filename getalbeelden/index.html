@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getalbeelden</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Getalbeelden</div>
+    <div class="seg" id="boxSeg">
+      <button data-boxes="1">1 eierdoos</button>
+      <button data-boxes="2">2 eierdozen</button>
+    </div>
+    <span class="grow"></span>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in"><svg id="board" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </main>
+
+  <footer class="controls">
+    <div class="palette" id="palette"></div>
+    <span class="sep"></span>
+    <button class="btn" id="btnMin" title="Laatste bol weg">&minus;1</button>
+    <button class="btn" id="btnPlus" title="Bol erbij in de gekozen kleur">+1</button>
+    <span class="sep"></span>
+    <button class="btn" id="btnFill" title="Vul alle lege vakjes in de gekozen kleur">Vul</button>
+    <button class="btn" id="btnClear">Leeg</button>
+    <span class="grow"></span>
+    <button class="btn" id="btnNum">Toon getal</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: de brug over 10</h2>
+      <p>Bij 8 + 5: leg 8 rode bollen. Kies blauw en tel er 5 bij met +1. Leerlingen zien dat de eerste doos
+        eerst vol moet: 8 + <b>2</b> = 10, en dan nog <b>3</b> in de tweede doos. Samen 13.</p>
+      <p>Laat leerlingen eerst zeggen hoeveel bollen ze zien en hoe ze dat snel kunnen tellen
+        ("een volle rij is 5, een volle doos is 10"), en toon dan pas het getal.</p>
+      <p class="hint">Klik op een vakje om een bol te leggen of te verwijderen. Een bol in een andere kleur
+        krijgt de gekozen kleur.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stemmen</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Stemmen</div>
+    <div class="seg" id="modeSeg">
+      <button data-mode="live" class="on">Met toestellen</button>
+      <button data-mode="manual">Handen tellen</button>
+    </div>
+    <div class="conn" id="conn" title="Verbinding met de stemdienst"><span class="dot"></span><span id="connText">Verbinden…</span></div>
+    <button class="icon-btn" id="btnSettings" title="Instellingen" aria-label="Instellingen">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.8 1.7 1L11 21h4l.4-2.7c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.5L19.4 13zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- Vraag opstellen -->
+    <section id="screenSetup" class="screen">
+      <div class="setup">
+        <div class="label">Soort vraag</div>
+        <div class="types" id="types"></div>
+
+        <label class="label" for="qText">Vraag <span class="muted">(optioneel)</span></label>
+        <input id="qText" class="text-in" maxlength="200" placeholder="Typ de vraag, of stel ze mondeling">
+
+        <div id="optEditor"></div>
+
+        <button id="btnStart" class="btn primary big">Start stemming</button>
+      </div>
+
+      <aside class="join-card" id="joinCard"></aside>
+    </section>
+
+    <!-- Stemming loopt -->
+    <section id="screenRun" class="screen hidden">
+      <div class="run-head">
+        <div class="run-title" id="runTitle"></div>
+        <div class="run-meta">
+          <span class="pill" id="statusPill">Open</span>
+          <span class="count" id="voteCount">0 stemmen</span>
+        </div>
+      </div>
+      <div class="run-body">
+        <div id="results" class="results"></div>
+        <aside class="join-mini" id="joinMini" title="Klik om de QR-code te vergroten"></aside>
+      </div>
+      <div id="manualWord" class="manual-word hidden">
+        <input id="wordInput" class="text-in" maxlength="40" placeholder="Typ een antwoord en druk Enter">
+        <button class="btn" id="btnAddWord">Toevoegen</button>
+      </div>
+      <footer class="controls">
+        <button class="btn" id="btnStop">Stop stemming</button>
+        <button class="btn" id="btnHide">Verberg resultaten</button>
+        <button class="btn" id="btnReveal">Toon juist antwoord</button>
+        <button class="btn" id="btnReset">Wis stemmen</button>
+        <span class="grow"></span>
+        <button class="btn primary" id="btnNew">Nieuwe vraag</button>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Grote QR -->
+  <div id="overlayQR" class="overlay hidden">
+    <div class="qr-big-card" id="qrBig"></div>
+  </div>
+
+  <!-- Instellingen -->
+  <div id="overlaySettings" class="overlay hidden">
+    <div class="dialog">
+      <h2>Instellingen</h2>
+      <label class="label" for="setUrl">Adres van de leerlingenpagina</label>
+      <input id="setUrl" class="text-in" placeholder="https://jouwnaam.github.io/stemmen/">
+      <p class="hint">Standaard de gedeelde pagina; die werkt voor iedereen. Laat leeg om terug te keren naar de standaard. Enkel aanpassen als je een eigen leerlingenpagina hebt.</p>
+
+      <label class="label" for="setBroker">Stemdienst (MQTT via WebSocket)</label>
+      <input id="setBroker" class="text-in">
+      <p class="hint">Standaard: de gratis publieke dienst van HiveMQ. Laat ongewijzigd tenzij je een eigen dienst hebt.</p>
+
+      <div class="label">Klascode</div>
+      <div class="code-row"><span id="setCode" class="code-chip"></span><button class="btn" id="btnNewCode">Nieuwe code</button></div>
+      <p class="hint">Alle pagina's van hetzelfde OpenBoard-document gebruiken dezelfde code, zodat leerlingen niet opnieuw hoeven te scannen. "Nieuwe code" geldt enkel voor deze widget.</p>
+
+      <p class="hint diag" id="diag"></p>
+
+      <div class="dialog-actions">
+        <button class="btn" id="btnSetCancel">Annuleren</button>
+        <button class="btn primary" id="btnSetSave">Opslaan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="lib/paho-mqtt.js"></script>
+<script src="lib/verbinding.js"></script>
+<script src="lib/qrcode.js"></script>
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

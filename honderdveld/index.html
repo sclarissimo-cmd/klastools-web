@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honderdveld</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Honderdveld</div>
+    <span class="grow"></span>
+    <button class="btn" id="btnDigits">Verberg getallen</button>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in"><svg id="board" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </main>
+
+  <footer class="controls">
+    <div class="palette" id="palette"></div>
+    <span class="sep"></span>
+    <button class="btn" id="btnMin10" title="Laatste 10 bollen weg">&minus;10</button>
+    <button class="btn" id="btnMin" title="Laatste bol weg">&minus;1</button>
+    <button class="btn" id="btnPlus" title="Bol erbij in de gekozen kleur">+1</button>
+    <button class="btn" id="btnPlus10" title="10 bollen erbij in de gekozen kleur">+10</button>
+    <span class="sep"></span>
+    <button class="btn" id="btnClear">Leeg</button>
+    <span class="grow"></span>
+    <button class="btn" id="btnNum">Toon getal</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: tientallen en eenheden</h2>
+      <p>Kleur 3 volle rijen rood (klik op de knopjes links) en 4 bollen blauw: leerlingen zien meteen
+        3 tientallen en 4 eenheden, samen 34.</p>
+      <p>Bij 27 + 8: leg 27 in rood, kies blauw en tel er 8 bij. Eerst 3 tot de volle rij (30), dan nog 5: 35.
+        Verberg de getallen in de vakjes om te laten tellen en schatten.</p>
+      <p class="hint">Klik op een vakje om een bol te leggen of te verwijderen. Klik op het knopje voor een rij
+        om de hele rij te kleuren; nog eens klikken maakt de rij leeg.<br>
+        Met <b>123</b> verberg je alle getallen en klik je losse getallen (of een hele rij) zichtbaar, bv. 1, 10,
+        50 en 100 als houvast. Kies een kleur om weer bollen te leggen.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

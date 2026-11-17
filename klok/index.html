@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klok</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Klok</div>
+    <span class="show-label">Toon</span>
+    <button class="btn small" id="tAnalog" title="Analoge klok tonen of verbergen">wijzerklok</button>
+    <button class="btn small" id="tDigital" title="Digitale klok tonen of verbergen">digitaal</button>
+    <button class="btn small" id="tWords" title="De tijd in woorden tonen of verbergen">in woorden</button>
+    <button class="btn small" id="tWordsPos" title="Woorden boven de klok zetten">&#9650; boven</button>
+    <span class="grow"></span>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in" id="stageIn">
+      <div class="pane" id="analogPane">
+        <svg id="clock" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div class="pane" id="digitalPane">
+        <div class="digital" id="digital">
+          <div class="dcol">
+            <button class="arrow" id="hUp" title="Uur later" aria-label="Uur later">&#9650;</button>
+            <input id="inH" class="dnum" maxlength="2" inputmode="numeric" autocomplete="off" aria-label="Uur">
+            <button class="arrow" id="hDown" title="Uur vroeger" aria-label="Uur vroeger">&#9660;</button>
+          </div>
+          <div class="colon">:</div>
+          <div class="dcol">
+            <button class="arrow" id="mUp" title="Minuten later" aria-label="Minuten later">&#9650;</button>
+            <input id="inM" class="dnum" maxlength="2" inputmode="numeric" autocomplete="off" aria-label="Minuten">
+            <button class="arrow" id="mDown" title="Minuten vroeger" aria-label="Minuten vroeger">&#9660;</button>
+          </div>
+        </div>
+      </div>
+      <div class="pane" id="wordsPane">
+        <div class="words">
+          <div class="w1" id="w1"></div>
+          <div class="w2" id="w2"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="controls">
+    <span class="show-label">Hulp</span>
+    <button class="btn" id="tVoorOver" title="Kleuren voor/over op de klok">voor / over</button>
+    <button class="btn" id="tLabels" title="Woorden rond de klok: vijf over, tien over, kwart over, ...">woorden rond</button>
+    <button class="btn" id="tMinNums" title="Minuten rond de klok: 05, 10, 15, ...">minuten</button>
+    <button class="btn" id="tH24" title="24 uur: 15:20 en 's namiddags">24 u</button>
+    <button class="btn" id="tRing24" title="Binnenring 13 tot 24 op de wijzerklok">13&ndash;24</button>
+    <span class="grow"></span>
+    <div class="seg" id="stepSeg">
+      <button data-step="1" title="Wijzers per minuut">1 min</button>
+      <button data-step="5" title="Wijzers per 5 minuten">5 min</button>
+    </div>
+    <button class="btn" id="btnRandom" title="Een willekeurige tijd">Willekeurig</button>
+    <button class="btn" id="btnNow" title="De tijd van nu">Nu</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: kloklezen</h2>
+      <p>De <b style="color:#1f5fbf">korte wijzer</b> wijst het uur aan, de <b style="color:#e5484d">lange wijzer</b>
+        de minuten. In de woorden hebben ze dezelfde kleur: "<span style="color:#e5484d">kwart over</span>
+        <span style="color:#1f5fbf">drie</span>".</p>
+      <p>Verberg de woorden en laat leerlingen de tijd zeggen; toon ze dan pas. Of verberg de wijzerklok en laat
+        ze de wijzers zelf zetten bij een digitale tijd.</p>
+      <p>"voor / over" kleurt de klok: rechts <b>over</b> het uur, links <b>voor</b> het volgende uur.
+        Rond half: "vijf voor half", "vijf over half".</p>
+      <p class="hint">Sleep de wijzers, gebruik de pijltjes of klik op de digitale cijfers en tik een tijd.
+        Draai je de lange wijzer rond, dan gaat de korte mee, zoals bij een echte klok.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>
