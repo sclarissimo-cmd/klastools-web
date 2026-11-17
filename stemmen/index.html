@@ -50,7 +50,7 @@
       </div>
       <div class="run-body">
         <div id="results" class="results"></div>
-        <aside class="join-mini" id="joinMini" title="Klik om de QR-code te vergroten"></aside>
+        <aside class="join-mini" id="joinMini" data-tik title="Klik om de QR-code te vergroten"></aside>
       </div>
       <div id="manualWord" class="manual-word hidden">
         <input id="wordInput" class="text-in" maxlength="40" placeholder="Typ een antwoord en druk Enter">
@@ -68,7 +68,7 @@
   </main>
 
   <!-- Grote QR -->
-  <div id="overlayQR" class="overlay hidden">
+  <div id="overlayQR" class="overlay hidden" data-tik>
     <div class="qr-big-card" id="qrBig"></div>
   </div>
 
@@ -98,6 +98,7 @@
   </div>
 </div>
 
+<script src="lib/tik.js"></script>
 <script src="lib/paho-mqtt.js"></script>
 <script src="lib/verbinding.js"></script>
 <script src="lib/qrcode.js"></script>

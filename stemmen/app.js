@@ -235,6 +235,7 @@
     }
     var qr = el('div', 'qr');
     qr.innerHTML = qrSvg(link);
+    qr.setAttribute('data-tik', '');
     qr.onclick = openQR;
     container.appendChild(qr);
     container.appendChild(el('div', 'join-url', shortUrl()));
@@ -303,6 +304,7 @@
         var L = el('div', 'letter' + (S.correct === i ? ' correct' : ''), LETTERS[i]);
         L.style.background = COLORS[i];
         L.title = 'Duid aan als juist antwoord';
+        L.setAttribute('data-tik', '');
         L.onclick = function () { S.correct = S.correct === i ? null : i; saveDraft(); renderOptEditor(); };
         var inp = el('input', 'text-in');
         inp.maxLength = 60;
@@ -555,6 +557,7 @@
       s.title = words[k] + '×';
       if (S.mode === 'manual') {
         s.title = words[k] + '× – klik om er één af te trekken';
+        s.setAttribute('data-tik', '');
         s.onclick = function () { S.manualWords[k]--; if (S.manualWords[k] <= 0) delete S.manualWords[k]; renderResults(); };
       }
       cloud.appendChild(s);
