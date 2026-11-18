@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Letterbord</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Letterbord</div>
+    <span class="grow"></span>
+    <button class="btn small" id="btnLetters" title="Kies welke letters en klanken op het bord liggen">Letters kiezen</button>
+    <button class="btn small" id="btnColors" title="Kleur van de klinkers en de medeklinkers">Kleuren</button>
+    <button class="btn small" id="btnCaps" title="Hoofdletters in de letterkast (bv. voor namen)">Hoofdletters</button>
+    <button class="btn small" id="btnClear" title="Alle woorden wissen">Alles wissen</button>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in" id="stageIn">
+      <svg id="board" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </main>
+
+  <footer class="controls">
+    <button class="btn" id="btnAdd" title="Nog een woordlijn">+ woord</button>
+    <button class="btn" id="btnDel" title="Laatste woordlijn weg">&minus; woord</button>
+    <span class="grow"></span>
+    <span class="show-label">Onder het woord</span>
+    <div class="seg" id="underSeg">
+      <button data-under="geen">Niets</button>
+      <button data-under="hand" title="Vlaams verbonden schoolschrift">Handschrift</button>
+      <button data-under="druk" title="Drukletters met de schoolletter a en g">Drukletters</button>
+      <button data-under="typ" title="Zoals in een boek of op de computer">Getypt</button>
+    </div>
+    <button class="btn" id="btnLines" title="Schrijflijnen onder het handschrift">Lijnen</button>
+  </footer>
+
+  <div id="overlayLetters" class="overlay hidden">
+    <div class="dialog wide">
+      <h2>Welke letters en klanken liggen op het bord?</h2>
+      <p class="hint">Tik op een letter om ze aan of uit te zetten. Zet alleen aan wat de klas al gezien heeft: het bord groeit mee met je leesmethode.</p>
+      <div id="letterGroups"></div>
+      <div class="dialog-actions"><button class="btn primary" id="btnLettersClose">Klaar</button></div>
+    </div>
+  </div>
+
+  <div id="overlayColors" class="overlay hidden">
+    <div class="dialog">
+      <h2>Kleuren</h2>
+      <div class="krij"><span class="naam">Klinkers</span><span id="palK"></span></div>
+      <div class="krij"><span class="naam">Medeklinkers</span><span id="palM"></span></div>
+      <div class="voorbeeld" id="colorSample"></div>
+      <p class="hint">Klinkers zijn ook de lange klanken en tweeklanken (aa, ie, ui, ij, ...). In veel Vlaamse klassen zijn klinkers rood en medeklinkers blauw.</p>
+      <div class="dialog-actions"><button class="btn" id="btnColorsReset">Standaard</button> <button class="btn primary" id="btnColorsClose">Klaar</button></div>
+    </div>
+  </div>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: hakken en plakken</h2>
+      <p>Leg een klankzuiver woord (bv. <b>r-oo-s</b>, <b>m-aa-n</b>, <b>v-i-s</b>) met de klanken uit de letterkast.
+        Laat de klas de klanken <b>hakken</b> (uit elkaar, elke klank apart zeggen) en weer <b>plakken</b> (aan elkaar,
+        zoemend lezen). Eén kaartje is één klank: daarom liggen <b>oo</b>, <b>ie</b> en <b>sch</b> samen op één kaartje.</p>
+      <p>Verberg het woord onderaan, laat het lezen of naschrijven en toon het dan in handschrift, drukletters of getypt.</p>
+      <p class="hint">Tik op een kaartje in de letterkast: het komt achteraan het gekozen woord. Of sleep het naar de juiste plek.
+        Tik op een kaartje in een woord om het weg te nemen, of sleep het weg. "Letters kiezen" bepaalt welke klanken er liggen.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="lib/tik.js"></script>
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

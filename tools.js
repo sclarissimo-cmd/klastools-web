@@ -25,5 +25,7 @@ var TOOLS = [
   { map: 'klok', naam: 'Klok', rubriek: 'meten', jaren: [1, 4],
     tekst: 'Wijzerklok en digitale klok samen, met de Vlaamse bewoording: “kwart over drie”.' },
   { map: 'geld', naam: 'Geld', rubriek: 'meten', jaren: [1, 6],
-    tekst: 'Geldbordje met euromunten en -biljetten: leggen en tellen, een bedrag leggen met zo weinig mogelijk stukken, wisselgeld teruggeven.' }
+    tekst: 'Geldbordje met euromunten en -biljetten: leggen en tellen, een bedrag leggen met zo weinig mogelijk stukken, wisselgeld teruggeven.' },
+  { map: 'letterbord', naam: 'Letterbord', rubriek: 'taal', jaren: [1, 2],
+    tekst: 'Klanken en letters samen leggen tot woorden, hakken en plakken. Het woord eronder in Vlaams handschrift, drukletters of getypt.' }
 ];

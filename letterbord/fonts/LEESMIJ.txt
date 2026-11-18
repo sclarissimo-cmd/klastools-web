@@ -1,0 +1,10 @@
+Lettertypes in deze widget (SIL Open Font License 1.1, zie OFL-*.txt):
+
+- PlaywriteBEVLG.woff en PlaywriteBEVLGGuides-Regular.woff: Playwrite België Vlaams
+  (Vlaams verbonden schoolschrift, met en zonder schrijflijnen), TypeTogether / The Playwrite Project Authors.
+  Bron: github.com/google/fonts (ofl/playwritebevlg en ofl/playwritebevlgguides).
+- KTDruk-Regular.woff en KTDruk-Bold.woff: verkleinde versie van Andika (SIL International), drukletters
+  met schoolletter a en g. Omdat "Andika" een voorbehouden naam is, heet de verkleinde versie "KT Druk".
+  Bron: github.com/google/fonts (ofl/andika).
+
+Alle bestanden zijn verkleind tot de Latijnse letters (U+0020-00FF en aanhalingstekens) met fontTools.
