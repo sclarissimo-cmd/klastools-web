@@ -373,13 +373,22 @@
     svg.addEventListener('mousedown', function (e) { startDrag(e, e.target); }, false);
     document.addEventListener('mousemove', function (e) { if (drag) { e.preventDefault(); dragTo(e.clientX, e.clientY); } }, false);
     document.addEventListener('mouseup', endDrag, false);
+    // Aanraken: de browser stuurt alle vingerbewegingen naar het element dat eerst aangeraakt werd, ook als
+    // dat ondertussen opnieuw getekend (en dus uit de pagina gehaald) is. Daarom luisteren we op dat element zelf.
     svg.addEventListener('touchstart', function (e) {
-      if (e.touches.length === 1) startDrag(e, e.target);
+      if (e.touches.length !== 1 || !startDrag(e, e.target)) return;
+      var tgt = e.target;
+      function move(ev) { if (drag && ev.touches.length) { ev.preventDefault(); dragTo(ev.touches[0].clientX, ev.touches[0].clientY); } }
+      function up() {
+        tgt.removeEventListener('touchmove', move, false);
+        tgt.removeEventListener('touchend', up, false);
+        tgt.removeEventListener('touchcancel', up, false);
+        endDrag();
+      }
+      tgt.addEventListener('touchmove', move, false);
+      tgt.addEventListener('touchend', up, false);
+      tgt.addEventListener('touchcancel', up, false);
     }, false);
-    document.addEventListener('touchmove', function (e) {
-      if (drag && e.touches.length) { e.preventDefault(); dragTo(e.touches[0].clientX, e.touches[0].clientY); }
-    }, false);
-    document.addEventListener('touchend', endDrag, false);
 
     on('hUp', function () { addMinutes(60); });
     on('hDown', function () { addMinutes(-60); });
