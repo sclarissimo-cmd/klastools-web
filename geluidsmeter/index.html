@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geluidsmeter</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Geluidsmeter</div>
+    <span class="grow"></span>
+    <button class="btn small" id="btnSound" title="Kort signaaltje als het een paar seconden te luid blijft">Signaal aan</button>
+    <button class="btn small" id="btnCount" title="Teller terug op 0 zetten">Teller op 0</button>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in" id="stageIn">
+      <svg id="board" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="msg" class="msg" data-tik>Tik op <b>Start</b> om te meten</div>
+    </div>
+  </main>
+
+  <footer class="controls">
+    <span class="show-label">Grens voor rood</span>
+    <button class="btn" id="btnDown" title="Grens lager: sneller rood" aria-label="Grens lager">&#9660;</button>
+    <span class="val" id="grensVal">60</span>
+    <button class="btn" id="btnUp" title="Grens hoger: later rood" aria-label="Grens hoger">&#9650;</button>
+    <span class="hint-inline">of versleep de rode lijn</span>
+    <span class="grow"></span>
+    <button class="btn primary start" id="btnStart">Start</button>
+  </footer>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: samen afspreken hoe luid het mag zijn</h2>
+      <p>Spreek af wat <b>werkniveau</b> is. Laat de klas even op dat niveau werken en zet de rode lijn net boven
+        de balk: groen = goed, oranje = opgelet, rood = te luid.</p>
+      <p>Gebruik de <b>teller</b> als uitdaging: "Lukt het om minder dan 3 keer rood te halen?" of "Hoe lang blijven
+        we rustig?" Het signaaltje klinkt pas als het een paar seconden te luid blijft.</p>
+      <p class="hint">Het geluid wordt alleen gemeten, nooit opgenomen of doorgestuurd. De schaal (0 tot 100) is geen
+        echte decibel: elke microfoon is anders, daarom stel je de grens zelf in.
+        Vraagt OpenBoard of de microfoon mag? Klik op <b>Yes</b>. Werkt de microfoon niet, kijk dan in Windows bij
+        Instellingen &gt; Privacy en beveiliging &gt; Microfoon (ook "bureaublad-apps" toestaan).</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="lib/tik.js"></script>
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>
