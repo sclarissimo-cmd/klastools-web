@@ -122,8 +122,10 @@
     }
     geo = g;
   }
+  // Vlaamse vulvolgorde zoals bij de eierdozen (Getalbeelden): per kolom eerst boven dan onder
+  // (links boven, links onder, tweede boven, ...), bij tot 20 eerst de linkse doos van 10, dan de rechtse.
   function cellXY(box, i) {
-    var c = geo.c, col = i % geo.cols, row = Math.floor(i / geo.cols);
+    var c = geo.c, k = i % 10, col = Math.floor(i / 10) * 5 + Math.floor(k / 2), row = k % 2;
     return { x: box.x + PAD + (col + (geo.cols === 10 && col >= 5 ? geo.ex : 0)) * c + c / 2, y: box.y + PAD + row * c + c / 2 };
   }
 
