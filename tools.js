@@ -20,6 +20,8 @@ var TOOLS = [
     tekst: 'Eierdozen in tienstructuur met gekleurde bollen. Twee dozen voor de brug over 10.' },
   { map: 'honderdveld', naam: 'Honderdveld', rubriek: 'getallen', jaren: [1, 3],
     tekst: 'Honderdveld van 10 x 10 met gekleurde bollen. Kleur een vakje of meteen een hele rij.' },
+  { map: 'splitsmachine', naam: 'Splitsmachine', rubriek: 'getallen', jaren: [1, 2],
+    tekst: 'Getallen tot 10 of tot 20 splitsen met bolletjes of cijfers, stap voor stap of automatisch. Met splitshuis.' },
   { map: 'breuken', naam: 'Breuken', rubriek: 'getallen', jaren: [3, 6],
     tekst: 'Chocoladerepen en taarten in gelijke stukken, met de breuk en het percent erbij.' },
   { map: 'klok', naam: 'Klok', rubriek: 'meten', jaren: [1, 4],
