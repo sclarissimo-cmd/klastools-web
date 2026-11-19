@@ -258,15 +258,29 @@
   }
 
   // ---------- Enkel het splitshuis: zelf invullen met het cijferklavier ----------
-  // per rij: 'ok' (som klopt), 'fout', 'dubbel' (zelfde splitsing al hoger) of '' (niet volledig)
+  // per rij: 'ok' (som klopt), 'fout', 'dubbel' (zelfde splitsing al hoger) of '' (niet volledig).
+  // Fout is ook al een half ingevulde rij met een getal groter dan het getal in het dak.
   function rijOordeel(i) {
     var v = state.vak[i];
+    if ((v[0] !== '' && +v[0] > state.n) || (v[1] !== '' && +v[1] > state.n)) return 'fout';
     if (v[0] === '' || v[1] === '') return '';
     if (+v[0] + +v[1] !== state.n) return 'fout';
     for (var j = 0; j < i; j++) if (state.vak[j][0] === v[0] && state.vak[j][1] === v[1]) return 'dubbel';
     return 'ok';
   }
-  var KLEUR_OORDEEL = { ok: '#d3f2df', fout: '#fbd5d5', dubbel: '#ffe8c2' };
+  var KLEUR_OORDEEL = { ok: '#d3f2df', fout: '#fbd5d5', dubbel: '#ffe8c2' }, FOUT_FEL = '#f08a8a';
+  // een rij die net fout wordt, knippert even (3 keer) en blijft daarna zacht rood
+  var knipper = null;
+  function knipperRij(r) {
+    if (knipper) clearInterval(knipper.t);
+    knipper = { r: r, n: 0 };
+    knipper.t = setInterval(function () {
+      knipper.n++;
+      var fel = knipper.n % 2 === 1, a = $('board').querySelectorAll('[data-foutrij="' + knipper.r + '"]');
+      for (var i = 0; i < a.length; i++) a[i].setAttribute('fill', fel ? FOUT_FEL : KLEUR_OORDEEL.fout);
+      if (knipper.n >= 6) { clearInterval(knipper.t); knipper = null; }
+    }, 280);
+  }
   function renderHuis() {
     var st = $('stageIn'), w = st.clientWidth, h = st.clientHeight;
     W = h > 0 ? Math.round(Math.max(1000, Math.min(2000, H * w / h))) : 1000;
@@ -283,11 +297,14 @@
     text(svg, x0 + houseW / 2, top - 22, String(state.n), 66, { fill: '#ffffff', 'class': 'huisgetal' });
     el('rect', { x: x0, y: top, width: houseW, height: per * rh, fill: '#ffffff', stroke: '#8a96a8', 'stroke-width': 4 }, svg);
     for (i = 0; i < rows; i++) {
-      var bl = Math.floor(i / per), r = i % per, oord = state.controle ? rijOordeel(i) : '';
+      var bl = Math.floor(i / per), r = i % per, oord = rijOordeel(i);
+      if (!state.controle && oord !== 'fout') oord = ''; // fout altijd meteen, groen en oranje pas bij Controleer
       for (var k = 0; k < 2; k++) {
         var x = x0 + bl * bw + k * cw, y = top + r * rh, kant = k ? 'r' : 'l', isSel = state.sel && state.sel.r === i && state.sel.k === kant;
-        el('rect', { x: x + 3, y: y + 3, width: cw - 6, height: rh - 6, rx: 8, fill: isSel ? '#cfe0f7' : (oord ? KLEUR_OORDEEL[oord] : '#ffffff'),
-          stroke: isSel ? '#1f5fbf' : '#e1e5ec', 'stroke-width': isSel ? 3 : 1.5, 'data-role': 'vak', 'data-r': i, 'data-k': kant, cursor: 'pointer' }, svg);
+        var vr = el('rect', { x: x + 3, y: y + 3, width: cw - 6, height: rh - 6, rx: 8, fill: isSel ? '#cfe0f7' : (oord ? KLEUR_OORDEEL[oord] : '#ffffff'),
+          stroke: isSel ? '#1f5fbf' : (oord === 'fout' ? '#e5484d' : '#e1e5ec'), 'stroke-width': isSel ? 3 : (oord === 'fout' ? 2.5 : 1.5),
+          'data-role': 'vak', 'data-r': i, 'data-k': kant, cursor: 'pointer' }, svg);
+        if (oord === 'fout' && !isSel) vr.setAttribute('data-foutrij', i);
         var v = state.vak[i][k];
         if (v !== '') text(svg, x + cw / 2, y + rh / 2 + fs * 0.36, v, fs, { 'pointer-events': 'none', 'class': 'vakcijfer' });
       }
@@ -326,14 +343,16 @@
   // cijfer in het gekozen vakje; daarna door naar het volgende vakje (links -> rechts -> volgende rij)
   function typ(v) {
     if (!state.sel) return;
-    var r = state.sel.r, k = state.sel.k === 'l' ? 0 : 1;
+    var r = state.sel.r, k = state.sel.k === 'l' ? 0 : 1, wasFout = rijOordeel(r) === 'fout';
     state.vak[r][k] = v === 'wis' ? '' : v;
     state.controle = false;
+    var nuFout = rijOordeel(r) === 'fout';
     if (v !== 'wis') {
       if (k === 0) state.sel = { r: r, k: 'r' };
       else state.sel = r < state.n ? { r: r + 1, k: 'l' } : null;
     }
     change();
+    if (nuFout && (!wasFout || v !== 'wis')) knipperRij(r);
   }
   function huisActie(wat) {
     for (var i = 0; i <= state.n; i++) {
