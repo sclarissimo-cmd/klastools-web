@@ -16,12 +16,13 @@
       <button data-toon="bol">Bolletjes</button>
       <button data-toon="beide">Beide</button>
       <button data-toon="cijfer">Cijfers</button>
+      <button data-toon="huis" title="Enkel het splitshuis: zelf de cijfers invullen">Splitshuis</button>
     </div>
     <div class="seg" id="totSeg">
       <button data-tot="10">tot 10</button>
       <button data-tot="20" title="Voor de brug tot 20">tot 20</button>
     </div>
-    <button class="btn small" id="btnHuis" title="Alle splitsingen van dit getal op een rij">Splitshuis</button>
+    <button class="btn small" id="btnHuis" title="Het splitshuis naast de machine: alle splitsingen die al gemaakt zijn">Huis ernaast</button>
     <button class="btn small" id="btnColors" title="Kleur van de bolletjes">Kleuren</button>
     <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
   </header>
@@ -38,7 +39,7 @@
     <span class="getal" id="getalVal">7</span>
     <button class="btn pm" id="btnPlus" title="Groter getal" aria-label="Groter getal">+</button>
     <button class="btn" id="btnDice" title="Kies een ander getal">Ander getal</button>
-    <span class="sep"></span>
+    <span class="sep" id="sepWijze"></span>
     <div class="seg" id="wijzeSeg">
       <button data-wijze="stap" title="Zelf bolletjes naar beneden laten vallen">Stap voor stap</button>
       <button data-wijze="auto" title="De machine splitst">Automatisch</button>
@@ -47,6 +48,10 @@
     <button class="btn" id="btnReset" title="Alles terug naar boven">Opnieuw</button>
     <button class="btn primary" id="btnSplit" title="De machine splitst (een splitsing die nog niet in het splitshuis staat)">Splits!</button>
     <button class="btn" id="btnNext" title="De volgende splitsing op volgorde">Volgende</button>
+    <button class="btn" id="btnLinks" title="De linkerkolom op volgorde invullen (0, 1, 2 ...): de klas vult rechts aan">Links invullen</button>
+    <button class="btn" id="btnCheck" title="Kleur de rijen: groen klopt, rood klopt niet, oranje staat er al">Controleer</button>
+    <button class="btn" id="btnSol" title="Alle splitsingen tonen">Oplossing</button>
+    <button class="btn" id="btnLeeg" title="Alle vakjes leeg maken">Leegmaken</button>
   </footer>
 
   <div id="overlayColors" class="overlay hidden">
@@ -68,6 +73,9 @@
       <p><b>Verstop</b> een deel: "7 splitst in 3 en ...?" Tik op het verstopte deel om het te tonen.</p>
       <p>Het <b>splitshuis</b> vult zich met elke splitsing die je maakt. Met "Volgende" komen ze op volgorde:
         links één meer, rechts één minder. Welke splitsingen ontbreken nog?</p>
+      <p>Abstracter: kies bovenaan <b>Splitshuis</b>. Tik op een vakje en dan op een cijfer. Begin met "Links invullen"
+        en laat de klas rechts aanvullen, of laat ze alles zelf zoeken. "Controleer" kleurt de rijen: groen klopt,
+        rood klopt niet, oranje staat er al.</p>
       <p><b>Brug tot 20</b>: voor 8 + 5 splits je 5 in 2 en 3 (8 + 2 = 10, 10 + 3 = 13).</p>
       <p class="hint">Stap voor stap: tik op een pijl bij een been of sleep een bolletje naar beneden. Tik op een bolletje
         onderaan om het terug naar boven te sturen. Automatisch: "Splits!" laat de machine splitsen.</p>

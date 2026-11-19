@@ -17,6 +17,8 @@
   // wijze ('stap'|'auto'), links en rechts (aantal bolletjes in elk deel), verstopt (''|'l'|'r'),
   // huis ('0'|'1', splitshuis tonen), gezien (linkerdelen van gemaakte splitsingen, komma's),
   // kleur (#rrggbb), kleur2 (#rrggbb voor het rechterdeel, '' = zelfde kleur).
+  // Sinds 0.3: toon 'huis' (enkel het splitshuis, zelf invullen) en invul (ingevulde vakken van dat huis,
+  // per rij "links-rechts", rijen gescheiden door komma's, bv. "0-7,1-,-5").
   // Nooit hernoemen of een andere betekenis geven: oude lessen bewaren deze waarden.
   var HAS_SANKORE = !!(window.sankore && typeof sankore.preference === 'function');
   function prefGet(k, d) {
@@ -40,12 +42,12 @@
   function isColor(c) { return /^#[0-9a-f]{6}$/i.test(c); }
   function int(s, d) { var n = parseInt(s, 10); return isNaN(n) ? d : n; }
 
-  var state = { n: 7, tot: 10, toon: 'bol', wijze: 'stap', a: 0, b: 0, verstopt: '', huis: false, gezien: {}, kleur: DEF_KLEUR, kleur2: '' };
+  var state = { n: 7, tot: 10, toon: 'bol', wijze: 'stap', a: 0, b: 0, verstopt: '', huis: false, gezien: {}, kleur: DEF_KLEUR, kleur2: '', vak: [], sel: null, controle: false };
   (function load() {
     state.tot = prefGet('tot', '10') === '20' ? 20 : 10;
     state.n = Math.max(1, Math.min(state.tot, int(prefGet('getal', '7'), 7)));
     var t = prefGet('toon', 'bol');
-    state.toon = t === 'beide' || t === 'cijfer' ? t : 'bol';
+    state.toon = t === 'beide' || t === 'cijfer' || t === 'huis' ? t : 'bol';
     state.wijze = prefGet('wijze', 'stap') === 'auto' ? 'auto' : 'stap';
     state.a = Math.max(0, Math.min(state.n, int(prefGet('links', '0'), 0)));
     state.b = Math.max(0, Math.min(state.n - state.a, int(prefGet('rechts', '0'), 0)));
@@ -57,11 +59,19 @@
       var x = int(list[i], -1);
       if (x >= 0 && x <= state.n) state.gezien[x] = true;
     }
+    var iv = prefGet('invul', ''), rows = iv === '' ? [] : iv.split(',');
+    leegHuis();
+    for (i = 0; i < rows.length && i <= state.n; i++) {
+      var lr = rows[i].split('-');
+      state.vak[i] = [vakWaarde(lr[0]), vakWaarde(lr[1])];
+    }
     var k = prefGet('kleur', DEF_KLEUR), k2 = prefGet('kleur2', '');
     state.kleur = isColor(k) ? k : DEF_KLEUR;
     state.kleur2 = isColor(k2) ? k2 : '';
   })();
 
+  function vakWaarde(s) { var n = parseInt(s, 10); return isNaN(n) || n < 0 || n > 20 ? '' : String(n); }
+  function leegHuis() { state.vak = []; for (var i = 0; i <= state.n; i++) state.vak.push(['', '']); state.sel = null; state.controle = false; }
   function rest() { return state.n - state.a - state.b; }
   function save() {
     if (rest() === 0) state.gezien[state.a] = true;
@@ -78,6 +88,9 @@
     prefSet('gezien', g.join(','));
     prefSet('kleur', state.kleur);
     prefSet('kleur2', state.kleur2);
+    var iv = [];
+    for (var j = 0; j < state.vak.length; j++) iv.push(state.vak[j][0] + '-' + state.vak[j][1]);
+    prefSet('invul', iv.join(','));
   }
 
   // ---------- Hulpjes ----------
@@ -175,6 +188,7 @@
   }
 
   function render() {
+    if (state.toon === 'huis') { renderHuis(); return; }
     layout();
     var svg = $('board'), g = geo, R = rest(), parts = [['l', state.a], ['r', state.b]], i;
     while (svg.firstChild) svg.removeChild(svg.firstChild);
@@ -243,7 +257,100 @@
     }
   }
 
+  // ---------- Enkel het splitshuis: zelf invullen met het cijferklavier ----------
+  // per rij: 'ok' (som klopt), 'fout', 'dubbel' (zelfde splitsing al hoger) of '' (niet volledig)
+  function rijOordeel(i) {
+    var v = state.vak[i];
+    if (v[0] === '' || v[1] === '') return '';
+    if (+v[0] + +v[1] !== state.n) return 'fout';
+    for (var j = 0; j < i; j++) if (state.vak[j][0] === v[0] && state.vak[j][1] === v[1]) return 'dubbel';
+    return 'ok';
+  }
+  var KLEUR_OORDEEL = { ok: '#d3f2df', fout: '#fbd5d5', dubbel: '#ffe8c2' };
+  function renderHuis() {
+    var st = $('stageIn'), w = st.clientWidth, h = st.clientHeight;
+    W = h > 0 ? Math.round(Math.max(1000, Math.min(2000, H * w / h))) : 1000;
+    var svg = $('board'), i;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var rows = state.n + 1, blocks = rows > 11 ? 2 : 1, per = blocks === 2 ? 11 : rows;
+    var roofH = 110, top = 20 + roofH, rh = Math.min(58, (H - top - 16) / per), cw = 120, bw = 2 * cw;
+    var houseW = blocks * bw, padCols = state.tot === 20 ? 4 : 3, pw = 74, padW = padCols * pw;
+    var x0 = (W - (houseW + 70 + padW)) / 2, fs = Math.min(40, rh * 0.72);
+    // dak met het getal
+    el('polygon', { points: (x0 - 14) + ',' + top + ' ' + (x0 + houseW / 2) + ',' + 20 + ' ' + (x0 + houseW + 14) + ',' + top,
+      fill: '#d62828', stroke: '#9b1c1c', 'stroke-width': 4, 'stroke-linejoin': 'round' }, svg);
+    text(svg, x0 + houseW / 2, top - 22, String(state.n), 66, { fill: '#ffffff', 'class': 'huisgetal' });
+    el('rect', { x: x0, y: top, width: houseW, height: per * rh, fill: '#ffffff', stroke: '#8a96a8', 'stroke-width': 4 }, svg);
+    for (i = 0; i < rows; i++) {
+      var bl = Math.floor(i / per), r = i % per, oord = state.controle ? rijOordeel(i) : '';
+      for (var k = 0; k < 2; k++) {
+        var x = x0 + bl * bw + k * cw, y = top + r * rh, kant = k ? 'r' : 'l', isSel = state.sel && state.sel.r === i && state.sel.k === kant;
+        el('rect', { x: x + 3, y: y + 3, width: cw - 6, height: rh - 6, rx: 8, fill: isSel ? '#cfe0f7' : (oord ? KLEUR_OORDEEL[oord] : '#ffffff'),
+          stroke: isSel ? '#1f5fbf' : '#e1e5ec', 'stroke-width': isSel ? 3 : 1.5, 'data-role': 'vak', 'data-r': i, 'data-k': kant, cursor: 'pointer' }, svg);
+        var v = state.vak[i][k];
+        if (v !== '') text(svg, x + cw / 2, y + rh / 2 + fs * 0.36, v, fs, { 'pointer-events': 'none', 'class': 'vakcijfer' });
+      }
+    }
+    // lijnen: midden van elk blok, en tussen de blokken
+    for (i = 0; i < blocks; i++) {
+      el('line', { x1: x0 + i * bw + cw, y1: top, x2: x0 + i * bw + cw, y2: top + per * rh, stroke: '#8a96a8', 'stroke-width': 3, 'pointer-events': 'none' }, svg);
+      if (i) el('line', { x1: x0 + i * bw, y1: top, x2: x0 + i * bw, y2: top + per * rh, stroke: '#8a96a8', 'stroke-width': 5, 'pointer-events': 'none' }, svg);
+    }
+    // cijferklavier
+    var px = x0 + houseW + 70, py = top, ph = 62, keys = [];
+    for (i = 0; i <= state.tot; i++) keys.push(String(i));
+    keys.push('wis');
+    el('text', { x: px, y: py - 18, 'font-size': 24, 'font-family': FONT, fill: '#667085' }, svg).textContent =
+      state.sel ? 'Tik een cijfer' : 'Tik eerst op een vakje';
+    var wisW = pw * (padCols - (keys.length - 1) % padCols) - 8;
+    for (i = 0; i < keys.length; i++) {
+      var kx = px + (i % padCols) * pw, ky = py + Math.floor(i / padCols) * ph, wis = keys[i] === 'wis', bw2 = wis ? wisW : pw - 8;
+      var g = el('g', { 'data-role': 'pad', 'data-v': keys[i], cursor: 'pointer', opacity: state.sel ? 1 : 0.45 }, svg);
+      el('rect', { x: kx, y: ky, width: bw2, height: ph - 8, rx: 10, fill: wis ? '#f4f6fa' : '#ffffff', stroke: '#c9d1de', 'stroke-width': 2.5 }, g);
+      text(g, kx + bw2 / 2, ky + (ph - 8) / 2 + 11, keys[i], wis ? 24 : 30, { 'font-weight': wis ? 600 : 700 });
+    }
+    // uitslag van de controle
+    if (state.controle) {
+      var ok = 0;
+      for (i = 0; i < rows; i++) if (rijOordeel(i) === 'ok') ok++;
+      text(svg, px, py + Math.ceil(keys.length / padCols) * ph + 40, ok + ' van de ' + rows + ' splitsingen', 26,
+        { 'text-anchor': 'start', fill: '#1f8a55', 'class': 'uitslag' });
+    }
+    renderControls();
+  }
+  function kiesVak(r, k) {
+    state.sel = state.sel && state.sel.r === r && state.sel.k === k ? null : { r: r, k: k };
+    render();
+  }
+  // cijfer in het gekozen vakje; daarna door naar het volgende vakje (links -> rechts -> volgende rij)
+  function typ(v) {
+    if (!state.sel) return;
+    var r = state.sel.r, k = state.sel.k === 'l' ? 0 : 1;
+    state.vak[r][k] = v === 'wis' ? '' : v;
+    state.controle = false;
+    if (v !== 'wis') {
+      if (k === 0) state.sel = { r: r, k: 'r' };
+      else state.sel = r < state.n ? { r: r + 1, k: 'l' } : null;
+    }
+    change();
+  }
+  function huisActie(wat) {
+    for (var i = 0; i <= state.n; i++) {
+      if (wat === 'links') state.vak[i][0] = String(i);
+      else if (wat === 'oplossing') state.vak[i] = [String(i), String(state.n - i)];
+      else if (wat === 'leeg') state.vak[i] = ['', ''];
+    }
+    state.sel = null;
+    state.controle = wat === 'oplossing';
+    change();
+  }
+
   function renderControls() {
+    var huis = state.toon === 'huis', ids = ['wijzeSeg', 'sepWijze', 'btnReset', 'btnHuis'], hids = ['btnLinks', 'btnCheck', 'btnSol', 'btnLeeg'], q;
+    for (q = 0; q < ids.length; q++) $(ids[q]).style.display = huis ? 'none' : '';
+    for (q = 0; q < hids.length; q++) $(hids[q]).style.display = huis ? '' : 'none';
+    $('btnCheck').className = 'btn' + (state.controle ? ' on' : '');
     var segs = [['toonSeg', 'data-toon', state.toon], ['totSeg', 'data-tot', String(state.tot)], ['wijzeSeg', 'data-wijze', state.wijze]];
     for (var s = 0; s < segs.length; s++) {
       var b = $(segs[s][0]).getElementsByTagName('button');
@@ -253,8 +360,8 @@
     $('btnMin').disabled = state.n <= 1;
     $('btnPlus').disabled = state.n >= state.tot;
     $('btnHuis').className = 'btn small' + (state.huis ? ' on' : '');
-    $('btnSplit').style.display = state.wijze === 'auto' ? '' : 'none';
-    $('btnNext').style.display = state.wijze === 'auto' ? '' : 'none';
+    $('btnSplit').style.display = state.wijze === 'auto' && !huis ? '' : 'none';
+    $('btnNext').style.display = state.wijze === 'auto' && !huis ? '' : 'none';
   }
 
   // ---------- Acties ----------
@@ -273,8 +380,10 @@
   function setGetal(n) {
     stopAnim();
     n = Math.max(1, Math.min(state.tot, n));
-    if (n !== state.n) state.gezien = {};
+    var nieuw = n !== state.n;
+    if (nieuw) state.gezien = {};
     state.n = n; state.a = 0; state.b = 0;
+    if (nieuw) leegHuis();
     change();
   }
   function opnieuw() { stopAnim(); state.a = 0; state.b = 0; change(); }
@@ -321,6 +430,7 @@
     return null;
   }
   function zoneAt(p) {
+    if (state.toon === 'huis') return '';
     var ws = ['t', 'l', 'r'];
     for (var i = 0; i < ws.length; i++) {
       var b = geo[ws[i]];
@@ -366,6 +476,10 @@
       if (verplaats('t', pr.w)) change();
     } else if (pr.role === 'cover') {
       state.verstopt = ''; change();
+    } else if (pr.role === 'vak') {
+      kiesVak(+pr.n.getAttribute('data-r'), pr.n.getAttribute('data-k'));
+    } else if (pr.role === 'pad') {
+      typ(pr.n.getAttribute('data-v'));
     } else if (pr.role === 'btn') {
       state.verstopt = state.verstopt === pr.w ? '' : pr.w; change();
     }
@@ -452,6 +566,26 @@
     on('btnReset', opnieuw);
     on('btnSplit', splits);
     on('btnNext', volgende);
+    on('btnLinks', function () { huisActie('links'); });
+    on('btnSol', function () { huisActie('oplossing'); });
+    on('btnLeeg', function () { huisActie('leeg'); });
+    on('btnCheck', function () { state.controle = !state.controle; state.sel = null; change(); });
+    // toetsenbord (laptop): cijfers typen, Backspace/Delete wist. Twee cijfers vlak na elkaar = één getal (12).
+    var vorig = null;
+    document.addEventListener('keydown', function (e) {
+      if (state.toon !== 'huis' || !state.sel) return;
+      var k = e.key || '', nu = new Date().getTime();
+      if (k === 'Backspace' || k === 'Delete') { vorig = null; typ('wis'); e.preventDefault(); return; }
+      if (!/^[0-9]$/.test(k)) return;
+      if (vorig && nu - vorig.t < 900 && +(vorig.v + k) <= state.tot) {
+        state.sel = { r: vorig.r, k: vorig.k };
+        vorig = null;
+        typ(String(+(state.vak[state.sel.r][state.sel.k === 'l' ? 0 : 1] + k)));
+        return;
+      }
+      vorig = { r: state.sel.r, k: state.sel.k, v: k, t: nu };
+      typ(k);
+    }, false);
     on('btnHuis', function () { state.huis = !state.huis; change(); });
     segClick('toonSeg', 'data-toon', function (v) { state.toon = v; change(); });
     segClick('wijzeSeg', 'data-wijze', function (v) { stopAnim(); state.wijze = v; change(); });
