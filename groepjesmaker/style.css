@@ -1,0 +1,142 @@
+/* Bewust "ouderwetse" CSS (geen grid, geen flex-gap, geen inset/min())
+   zodat de widget ook werkt in de oudere browser-engine van OpenBoard. */
+:root {
+  --bg: #f4f6fa;
+  --panel: #ffffff;
+  --ink: #18212f;
+  --muted: #667085;
+  --line: #d9dee8;
+  --brand: #1f5fbf;
+  --brand-ink: #ffffff;
+  --radius: 14px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: #f4f6fa; background: var(--bg);
+  color: #18212f; color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  font-size: 16px;
+  overflow: hidden;
+  -webkit-user-select: none; user-select: none;
+}
+#app { display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; height: 100%; }
+.hidden { display: none !important; }
+.grow { -webkit-flex: 1; flex: 1; }
+
+/* ---------- Topbalk ---------- */
+.topbar {
+  display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center;
+  padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; font-weight: 700; font-size: 19px; margin-right: 14px; white-space: nowrap; }
+.brand img { width: 28px; height: 28px; margin-right: 8px; }
+.seg { display: flex; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.seg button {
+  border: 0; background: transparent; padding: 8px 16px; border-radius: 999px;
+  font-family: inherit; font-size: 16px; color: var(--muted); cursor: pointer; white-space: nowrap;
+}
+.seg button.on { background: var(--brand); color: var(--brand-ink); }
+.icon-btn {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  width: 38px; height: 38px; border-radius: 10px; cursor: pointer; padding: 0;
+  font-family: inherit; font-size: 20px; font-weight: 700;
+}
+
+/* ---------- Bord: hoogte in % werkt niet in een flex-item, dus absoluut positioneren ---------- */
+#stage { -webkit-flex: 1; flex: 1; position: relative; min-height: 0; }
+.stage-in { position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; }
+#board { display: block; width: 100%; height: 100%; }
+
+/* ---------- Knoppen onderaan ---------- */
+.controls {
+  display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center;
+  padding: 10px 14px; background: var(--panel); border-top: 1px solid var(--line);
+}
+.controls > * { margin-right: 8px; }
+.controls > *:last-child { margin-right: 0; }
+.sep { width: 1px; height: 34px; background: var(--line); margin: 0 6px; }
+.btn {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  font-family: inherit; font-size: 18px; padding: 10px 18px; border-radius: 10px; cursor: pointer;
+  min-width: 56px; white-space: nowrap;
+}
+.btn.primary, .btn.on { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 600; }
+
+
+/* ---------- Tip ---------- */
+.overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(24, 33, 47, .45);
+  display: flex; align-items: center; justify-content: center;
+}
+.dialog {
+  background: var(--panel); border-radius: var(--radius); padding: 20px 24px; width: 80%; max-width: 620px;
+  font-size: 17px; line-height: 1.45;
+}
+.dialog h2 { margin: 0 0 10px; font-size: 22px; }
+.dialog p { margin: 0 0 10px; }
+.hint { color: var(--muted); font-size: 15px; }
+.dialog-actions { text-align: right; margin-top: 14px; }
+
+
+/* ---------- Groepjesmaker ---------- */
+.topbar .btn.small { margin-left: 8px; font-size: 16px; padding: 8px 12px; min-width: 0; }
+.topbar .icon-btn { margin-left: 8px; }
+.show-label { color: var(--muted); font-size: 16px; margin-right: 6px; white-space: nowrap; }
+.topbar .seg { margin-left: 8px; }
+.topbar .seg button { font-size: 15px; padding: 7px 11px; }
+.controls .seg button { font-size: 15px; padding: 8px 12px; }
+.controls .btn { font-size: 17px; padding: 9px 14px; min-width: 0; }
+.controls .btn.pm, .rij .btn.pm { font-size: 22px; font-weight: 700; width: 46px; padding: 6px 0; min-width: 0; }
+.getal { display: inline-block; min-width: 44px; text-align: center; font-size: 28px; font-weight: 700; }
+.info { color: var(--muted); font-size: 16px; margin-left: 6px; white-space: nowrap; }
+.btn[disabled] { opacity: .4; cursor: default; }
+
+#stageIn { -webkit-touch-callout: none; }
+#groepen { position: absolute; top: 0; left: 0; right: 0; }
+.groep {
+  position: absolute; background: #ffffff; border: 3px solid #1f5fbf; border-radius: 14px; overflow: hidden;
+}
+.groep.over, .vak.over { box-shadow: 0 0 0 4px #ffd43b; }
+.groep-kop { color: #ffffff; font-weight: 700; padding: 0 12px; white-space: nowrap; overflow: hidden; }
+.groep-kop .tel { float: right; opacity: .85; font-weight: 600; }
+.groep-in { padding: 6px 8px; }
+
+.chip {
+  background: #ffffff; border: 1px solid #c9d1de; border-left: 6px solid #9aa4b5; border-radius: 8px;
+  padding: .12em .45em; margin: 0 0 .22em; font-weight: 600; line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.chip.sel { background: #fff3bf; border-color: #f2b705; box-shadow: 0 0 0 3px #ffd43b; }
+.chip.ghost {
+  position: fixed; z-index: 50; margin: 0; pointer-events: none; opacity: .92;
+  box-shadow: 0 8px 22px rgba(24, 33, 47, .3); background: #fff3bf;
+}
+
+#onder { position: absolute; left: 0; }
+.vak { position: absolute; top: 0; background: #ffffff; border: 2px dashed #b8c1d1; border-radius: 14px; overflow: hidden; }
+.vak.pool { left: 0; width: 78%; }
+.vak.afw { right: 0; width: 20%; background: #f1f3f7; }
+.vak-kop { color: var(--muted); font-size: 15px; font-weight: 700; padding: 6px 12px 2px; }
+.vak-in { padding: 4px 10px 6px; }
+.vak .chip { display: inline-block; margin: 0 6px 6px 0; font-size: 20px; max-width: 100%; }
+.vak.afw .chip { color: #667085; text-decoration: line-through; }
+#onder.groot .vak .chip { font-size: 26px; }
+
+.leegmelding {
+  position: absolute; top: 40%; left: 10%; right: 10%; text-align: center; font-size: 24px; color: var(--muted);
+}
+
+/* venster Leerlingen */
+.dialog.wide { max-width: 680px; }
+.dialog .seg { display: inline-block; margin-bottom: 10px; }
+.dialog .seg button { font-size: 16px; }
+#namenIn {
+  width: 100%; font-family: inherit; font-size: 17px; line-height: 1.35; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 10px; resize: vertical;
+}
+.rij { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; margin: 4px 0 10px; }
+.rij > * { margin-right: 6px; }
+button.link { border: 0; background: none; color: var(--brand); font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+.privacy { background: #eef4ff; border-radius: 10px; padding: 8px 12px; color: #33415c; }

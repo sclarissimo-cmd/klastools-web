@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Groepjesmaker</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../web.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="icon.svg" alt=""> Groepjesmaker</div>
+    <span class="grow"></span>
+    <div class="seg" id="wijzeSeg">
+      <button data-wijze="auto" title="De groepjes worden willekeurig gemaakt">Automatisch</button>
+      <button data-wijze="manueel" title="Lege groepjes: sleep zelf de leerlingen erin">Zelf verdelen</button>
+    </div>
+    <button class="btn small" id="btnLln" title="Namen of klasnummers ingeven">Leerlingen</button>
+    <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
+  </header>
+
+  <main id="stage">
+    <div class="stage-in" id="stageIn">
+      <div id="groepen"></div>
+      <div id="onder">
+        <div class="vak pool" id="pool" data-drop="pool"><div class="vak-kop">Nog te verdelen</div><div class="vak-in" id="poolIn"></div></div>
+        <div class="vak afw" id="afw" data-drop="afw"><div class="vak-kop">Afwezig</div><div class="vak-in" id="afwIn"></div></div>
+      </div>
+      <div id="leegmelding" class="leegmelding hidden">Tik op <b>Leerlingen</b> om namen in te geven of klasnummers te kiezen.</div>
+    </div>
+  </main>
+
+  <footer class="controls">
+    <span class="show-label">Per groepje</span>
+    <button class="btn pm" id="btnMin" title="Kleinere groepjes" aria-label="Kleinere groepjes">&minus;</button>
+    <span class="getal" id="perVal">4</span>
+    <button class="btn pm" id="btnPlus" title="Grotere groepjes" aria-label="Grotere groepjes">+</button>
+    <span class="info" id="info"></span>
+    <span class="grow"></span>
+    <button class="btn" id="btnGrPlus" title="Een groepje bijmaken">+ Groepje</button>
+    <button class="btn" id="btnGrMin" title="Het laatste groepje weghalen (de leerlingen gaan terug)">&minus; Groepje</button>
+    <button class="btn" id="btnTerug" title="Iedereen terug naar 'Nog te verdelen'">Alles terug</button>
+    <button class="btn primary" id="btnMaak" title="Groepjes maken">Maak groepjes</button>
+  </footer>
+
+  <div id="overlayLln" class="overlay hidden">
+    <div class="dialog wide">
+      <h2>Leerlingen</h2>
+      <div class="seg" id="bronSeg">
+        <button data-bron="namen">Namen</button>
+        <button data-bron="nummers">Klasnummers</button>
+      </div>
+      <div id="paneNamen">
+        <p class="hint">Eén naam per regel. Je kan ook een lijst plakken.</p>
+        <textarea id="namenIn" rows="10" spellcheck="false"></textarea>
+        <p class="hint"><span id="namenTel">0 namen</span> &middot; <button class="link" id="btnWisNamen">Alle namen wissen</button></p>
+      </div>
+      <div id="paneNummers" class="hidden">
+        <p class="hint">Hoeveel leerlingen zitten er in de klas?</p>
+        <div class="rij"><button class="btn pm" id="btnAMin" aria-label="Minder">&minus;</button>
+          <span class="getal" id="aantalVal">20</span>
+          <button class="btn pm" id="btnAPlus" aria-label="Meer">+</button>
+          <span class="hint" style="margin-left:10px">klasnummers 1 tot <span id="aantalTot">20</span></span></div>
+      </div>
+      <p class="hint privacy" id="privacy">De namen blijven op dit toestel. Ze worden nergens anders naartoe gestuurd.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnLlnKlaar">Klaar</button></div>
+    </div>
+  </div>
+
+  <div id="overlayTip" class="overlay hidden">
+    <div class="dialog">
+      <h2>Tip: groepjes maken</h2>
+      <p>Geef bij <b>Leerlingen</b> één keer de voornamen in, of werk met klasnummers.
+        Kies hoeveel kinderen er in een groepje zitten.</p>
+      <p><b>Automatisch</b>: "Maak groepjes" verdeelt de klas willekeurig. Gaat het niet precies op,
+        dan zijn sommige groepjes één kind groter of kleiner. Nog eens tikken geeft nieuwe groepjes.</p>
+      <p><b>Zelf verdelen</b>: je krijgt lege groepjes. Sleep elke leerling naar een groepje.</p>
+      <p>Daarna kan je altijd nog schuiven: sleep een leerling naar een ander groepje, of tik op een leerling en
+        dan op het groepje. Wie er niet is, sleep je naar <b>Afwezig</b>: die telt niet mee bij het verdelen.</p>
+      <p class="hint" id="tipPrivacy">De namen blijven op dit toestel: in de OpenBoard-les zelf, of in deze browser.</p>
+      <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="lib/tik.js"></script>
+<script src="app.js"></script>
+<script src="../web.js"></script>
+</body>
+</html>

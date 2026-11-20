@@ -18,6 +18,8 @@ var TOOLS = [
     tekst: 'Aftellen in uren, minuten en seconden, digitaal of als zandloper, met een bel. Ook een stopwatch.' },
   { map: 'geluidsmeter', naam: 'Geluidsmeter', rubriek: 'klas', jaren: [1, 6],
     tekst: 'Verkeerslicht dat toont hoe luid de klas is: groen, oranje of rood. Jij stelt de grens in. Met signaaltje en teller.' },
+  { map: 'groepjesmaker', naam: 'Groepjesmaker', rubriek: 'klas', jaren: [1, 6],
+    tekst: 'De klas in groepjes verdelen, met voornamen of klasnummers. Automatisch of zelf, en daarna nog leerlingen verschuiven.' },
   { map: 'stemmen', naam: 'Stemmen', rubriek: 'samen', jaren: [1, 6],
     tekst: 'Leerlingen stemmen met hun gsm of tablet via een QR-code, of je telt handen. Meerkeuze, ja/nee, duim, schaal en woordwolk.' },
   { map: 'getalbeelden', naam: 'Getalbeelden', rubriek: 'getallen', jaren: [1, 2],

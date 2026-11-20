@@ -1,1 +1,1 @@
-var KT_VERSIE = {"datum": "2026.11.20", "tools": {"stemmen": "1.5", "getalbeelden": "0.3", "honderdveld": "0.2", "breuken": "0.2", "klok": "0.6", "timer": "0.3", "geld": "0.3", "geluidsmeter": "0.1", "letterbord": "0.1", "splitsmachine": "0.4"}};
+var KT_VERSIE = {"datum": "2026.11.20", "tools": {"stemmen": "1.5", "getalbeelden": "0.3", "honderdveld": "0.2", "breuken": "0.2", "klok": "0.6", "timer": "0.3", "geld": "0.3", "geluidsmeter": "0.1", "letterbord": "0.1", "splitsmachine": "0.4", "groepjesmaker": "0.1"}};
