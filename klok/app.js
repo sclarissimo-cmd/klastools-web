@@ -80,16 +80,15 @@
 
   // Geeft een lijst stukken [{t: tekst, c: 'min'|'uur'|''}]:
   // 3.00 drie uur | 3.05 vijf over drie | 3.15 kwart over drie | 3.20 twintig over drie |
-  // 3.25 vijf voor half vier | 3.30 half vier | 3.35 vijf over half vier | 3.40 twintig voor vier |
+  // 3.25 vijfentwintig over drie | 3.30 half vier | 3.35 vijfentwintig voor vier | 3.40 twintig voor vier |
   // 3.45 kwart voor vier | 3.55 vijf voor vier.
+  // Zo zeggen de nieuwe Vlaamse minimumdoelen het (vroeger: "vijf voor half vier", "vijf over half vier").
   function speak(time) {
     var h = Math.floor(time / 60), m = time % 60;
     var cur = hourWord(h), next = hourWord(h + 1);
     if (m === 0) return [{ t: cur, c: 'uur' }, { t: ' uur', c: '' }];
-    if (m <= 20) return [{ t: mins(m) + ' over ', c: 'min' }, { t: cur, c: 'uur' }];
-    if (m < 30) return [{ t: mins(30 - m) + ' voor half ', c: 'min' }, { t: next, c: 'uur' }];
+    if (m < 30) return [{ t: mins(m) + ' over ', c: 'min' }, { t: cur, c: 'uur' }];
     if (m === 30) return [{ t: 'half ', c: 'min' }, { t: next, c: 'uur' }];
-    if (m < 40) return [{ t: mins(m - 30) + ' over half ', c: 'min' }, { t: next, c: 'uur' }];
     return [{ t: mins(60 - m) + ' voor ', c: 'min' }, { t: next, c: 'uur' }];
   }
   function dagdeel(time) {
@@ -113,8 +112,8 @@
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function digitalText(time) {
     var h = Math.floor(time / 60), m = time % 60;
-    if (!state.h24) { h = h % 12; if (h === 0) h = 12; return h + ':' + pad(m); }
-    return pad(h) + ':' + pad(m);
+    if (!state.h24) { h = h % 12; if (h === 0) h = 12; }
+    return pad(h) + ':' + pad(m); // altijd twee cijfers voor het uur: 03:35
   }
 
   // ---------- Tijd veranderen ----------
@@ -145,8 +144,8 @@
     return { x: r * Math.cos(rad), y: r * Math.sin(rad) };
   }
 
-  var LABELS = ['uur', 'vijf over', 'tien over', 'kwart over', 'twintig over', 'vijf voor half', 'half',
-    'vijf over half', 'twintig voor', 'kwart voor', 'tien voor', 'vijf voor'];
+  var LABELS = ['uur', 'vijf over', 'tien over', 'kwart over', 'twintig over', 'vijfentwintig over', 'half',
+    'vijfentwintig voor', 'twintig voor', 'kwart voor', 'tien voor', 'vijf voor'];
 
   function renderClock() {
     var svg = document.getElementById('clock');
@@ -223,7 +222,7 @@
     var h = Math.floor(state.time / 60), m = state.time % 60;
     var inH = document.getElementById('inH'), inM = document.getElementById('inM');
     if (!state.h24) { h = h % 12; if (h === 0) h = 12; }
-    if (document.activeElement !== inH) inH.value = state.h24 ? pad(h) : String(h);
+    if (document.activeElement !== inH) inH.value = pad(h);
     if (document.activeElement !== inM) inM.value = pad(m);
   }
 
