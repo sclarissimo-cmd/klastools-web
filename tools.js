@@ -1,6 +1,10 @@
 // Catalogus van de startpagina: rubrieken en tools. Pas hier de indeling aan.
 // map = mapnaam in build/web/ (= widgetnaam in kleine letters); jaren = [van, tot] leerjaar (1..6).
 // Een rubriek zonder tools wordt niet getoond. Volgorde hier = volgorde op de pagina.
+// Adres van het Google Formulier voor fouten en ideeën (de "Formulier verzenden"-link, eindigt op /viewform).
+// Leeg = het blok "Fout gezien of een idee?" staat niet op de startpagina.
+var MELDFORMULIER = 'https://docs.google.com/forms/d/e/1FAIpQLSdksu8gLY7h-StWhQcKWP91qtirpvZRBLiQJr8WjLkjqdi1Sw/viewform';
+
 var RUBRIEKEN = [
   { id: 'klas', naam: 'Klasmanagement', uitleg: 'Tijd, beurten en rust in de klas.' },
   { id: 'samen', naam: 'Leerlingen doen mee', uitleg: 'Iedereen antwoordt, met een eigen toestel of door handen te tellen.' },

@@ -56,6 +56,20 @@ a { color: var(--brand); }
 .jaren { display: inline-block; font-size: 14px; font-weight: 600; color: var(--brand-dark); background: #e8effb; border-radius: 999px; padding: 3px 10px; }
 .leeg { text-align: center; color: var(--muted); padding: 40px 24px; }
 
+.melden { max-width: 1180px; margin: 10px auto 0; padding: 0 24px; }
+.melden-in {
+  display: flex; align-items: center; flex-wrap: wrap; padding: 20px 22px;
+  background: #fff8e1; border: 1px solid #f5d77a; border-radius: 16px;
+}
+.melden-tekst { flex: 1; min-width: 260px; margin-right: 20px; }
+.melden h2 { margin: 0 0 4px; font-size: 24px; }
+.melden p { margin: 0; color: var(--muted); }
+.melden-knop {
+  display: inline-block; margin: 10px 0; padding: 14px 22px; border-radius: 12px; background: var(--brand); color: #fff;
+  font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.melden-knop:hover, .melden-knop:focus { background: var(--brand-dark); }
+
 .voet { border-top: 1px solid var(--line); background: var(--panel); margin-top: 24px; }
 .voet-in { padding-top: 18px; padding-bottom: 22px; font-size: 16px; color: var(--muted); }
 .voet p { margin: 0 0 8px; }
@@ -65,5 +79,6 @@ a { color: var(--brand); }
   .kaart { min-width: 0; width: 100%; max-width: none; }
   .kop h1 { font-size: 30px; }
   .logo { width: 52px; height: 52px; }
-  .kop-in, .filter-in, .inhoud, .voet-in { padding-left: 16px; padding-right: 16px; }
+  .kop-in, .filter-in, .inhoud, .voet-in, .melden { padding-left: 16px; padding-right: 16px; }
+  .melden-knop { white-space: normal; }
 }

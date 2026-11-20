@@ -76,6 +76,12 @@
   var v = document.getElementById('versie');
   if (v && window.KT_VERSIE) v.textContent = 'versie ' + window.KT_VERSIE.datum;
 
+  // blok om fouten en ideeën te melden (Google Formulier), enkel als het adres ingevuld is in tools.js
+  if (window.MELDFORMULIER) {
+    document.getElementById('meldKnop').href = window.MELDFORMULIER;
+    document.getElementById('melden').className = 'melden';
+  }
+
   chips();
   render();
 
