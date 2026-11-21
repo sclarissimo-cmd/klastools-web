@@ -269,6 +269,7 @@
     $('btnLaagStad').className = 'btn small toggle' + (state.stad ? ' on' : '');
     $('btnEU').className = 'btn small toggle' + (state.eu ? ' on' : '');
     $('btnKleur').className = 'btn small toggle' + (state.kleur ? ' on' : '');
+    mapsKnop();
     $('btnLaagRiv').className = 'btn small toggle' + (state.riv ? ' on' : '');
     $('btnLaagBerg').className = 'btn small toggle' + (state.berg ? ' on' : '');
     $('btnAlleRiv').disabled = !state.riv;
@@ -310,6 +311,7 @@
     var r = n.getAttribute('data-role'), id = n.getAttribute('data-id');
     var o = r === 'stad' ? state.snamen : r === 'riv' ? state.rnamen : r === 'berg' ? state.bnamen : state.lnamen;
     o[id] = !o[id];
+    if (o[id]) laatste = { role: r, id: id };
     bewaar();
     render();
   }
@@ -344,6 +346,29 @@
     }, false);
   }
 
+  var laatste = null; // laatst aangetikte plaats (voor Google Maps)
+  function mapsVraag() {
+    if (!laatste) return 'Europa';
+    if (laatste.role === 'riv') return laatste.id + ' (rivier)';
+    if (laatste.role === 'berg') return laatste.id + ' (gebergte)';
+    for (var i = 0; i < LANDEN.length; i++) {
+      if (LANDEN[i].id !== laatste.id) continue;
+      return laatste.role === 'stad' ? LANDEN[i].stad + ', ' + LANDEN[i].naam : LANDEN[i].naam;
+    }
+    return 'Europa';
+  }
+
+  // ---------- Google Maps (enkel in de webversie: de knop heeft class alleen-web) ----------
+  // Opent de plaats die het laatst aangetikt werd; er gaat pas iets naar Google als de leerkracht op de knop tikt.
+  function mapsOpen() {
+    var q = mapsVraag();
+    try { window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q), '_blank'); } catch (e) {}
+  }
+  function mapsKnop() {
+    var b = $('btnMaps');
+    if (b) b.title = 'Bekijk ' + mapsVraag() + ' in Google Maps (opent een nieuw tabblad)';
+  }
+
   // ---------- Opstarten ----------
   function on(id, fn) { $(id).addEventListener('click', fn, false); }
   function knop(k, id) {
@@ -368,6 +393,7 @@
       bewaar();
       render();
     });
+    on('btnMaps', mapsOpen);
     on('btnTip', function () { $('overlayTip').className = 'overlay'; });
     on('btnTipClose', function () { $('overlayTip').className = 'overlay hidden'; });
     bindPointer();

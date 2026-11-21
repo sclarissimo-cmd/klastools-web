@@ -8,3 +8,6 @@
 .web-home svg { width: 20px; height: 20px; margin-right: 6px; }
 .web-fs { margin-left: 8px; }
 .web-fs svg { width: 20px; height: 20px; display: block; margin: 0 auto; }
+
+/* knoppen die enkel in de webversie bestaan (bv. Google Maps bij de kaarten) */
+.web .alleen-web { display: inline-block; }

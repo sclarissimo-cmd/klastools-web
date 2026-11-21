@@ -94,3 +94,7 @@ body {
   border: 2px solid #b8c1d1; margin-right: 7px; vertical-align: -1px; }
 .topbar .btn.toggle.on { background: #e8f0fe; border-color: #a9c4f5; color: #1f5fbf; font-weight: 600; }
 .topbar .btn.toggle.on:before { background: #1f5fbf; border-color: #1f5fbf; }
+
+/* Google Maps-knop: enkel zichtbaar in de webversie (web.css toont ze) */
+.alleen-web { display: none; }
+.btn.alleen-web svg { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }

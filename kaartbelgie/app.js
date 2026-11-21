@@ -234,6 +234,7 @@
 
     // knoppen
     $('btnKleur').className = 'btn small toggle' + (state.kleur ? ' on' : '');
+    mapsKnop();
     $('btnLaagGewest').className = 'btn small toggle' + (state.gewest ? ' on' : '');
     $('btnLaagStad').className = 'btn small toggle' + (state.stad ? ' on' : '');
     $('btnLaagRiv').className = 'btn small toggle' + (state.riv ? ' on' : '');
@@ -314,6 +315,7 @@
     var role = n.getAttribute('data-role'), id = n.getAttribute('data-id');
     var o = role === 'prov' ? state.pnamen : role === 'stad' ? state.snamen : state.rnamen;
     o[id] = !o[id];
+    if (o[id]) laatste = { role: role, id: id };
     bewaar();
     render();
   }
@@ -350,6 +352,28 @@
     }, false);
   }
 
+  var laatste = null; // laatst aangetikte plaats (voor Google Maps)
+  function mapsVraag() {
+    if (!laatste) return 'België';
+    var i, p = null;
+    for (i = 0; i < K.provincies.length; i++) if (K.provincies[i].id === laatste.id) p = K.provincies[i];
+    if (laatste.role === 'riv') return laatste.id + ' (rivier), België';
+    if (!p) return 'België';
+    if (laatste.role === 'stad') return p.stad + ', België';
+    return p.id === 'bru' ? 'Brussels Hoofdstedelijk Gewest' : 'Provincie ' + p.naam + ', België';
+  }
+
+  // ---------- Google Maps (enkel in de webversie: de knop heeft class alleen-web) ----------
+  // Opent de plaats die het laatst aangetikt werd; er gaat pas iets naar Google als de leerkracht op de knop tikt.
+  function mapsOpen() {
+    var q = mapsVraag();
+    try { window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q), '_blank'); } catch (e) {}
+  }
+  function mapsKnop() {
+    var b = $('btnMaps');
+    if (b) b.title = 'Bekijk ' + mapsVraag() + ' in Google Maps (opent een nieuw tabblad)';
+  }
+
   // ---------- Opstarten ----------
   function on(id, fn) { $(id).addEventListener('click', fn, false); }
   function laag(k, id) {
@@ -364,6 +388,7 @@
     on('btnAlleStad', function () { wissel(state.snamen, K.provincies, 'id'); bewaar(); render(); });
     on('btnAlleRiv', function () { wissel(state.rnamen, K.rivieren, 'naam'); bewaar(); render(); });
     on('btnWis', function () { state.pnamen = {}; state.snamen = {}; state.rnamen = {}; bewaar(); render(); });
+    on('btnMaps', mapsOpen);
     on('btnTip', function () { $('overlayTip').className = 'overlay'; });
     on('btnTipClose', function () { $('overlayTip').className = 'overlay hidden'; });
     bindPointer();
