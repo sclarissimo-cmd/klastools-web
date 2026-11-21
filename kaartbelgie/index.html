@@ -12,9 +12,9 @@
   <header class="topbar">
     <div class="brand"><img src="icon.svg" alt=""> Kaart van België</div>
     <span class="grow"></span>
-    <button class="btn small toggle" id="btnLaagProv" title="Bolletjes van de provincies tonen">Provincies</button>
     <button class="btn small toggle" id="btnLaagStad" title="Sterretjes van de hoofdsteden tonen">Hoofdsteden</button>
     <button class="btn small toggle" id="btnLaagRiv" title="Rivieren tonen">Rivieren</button>
+    <button class="btn small toggle" id="btnLaagGewest" title="De drie gewesten tonen: Vlaams, Waals en Brussels Hoofdstedelijk Gewest">Gewesten</button>
     <button class="btn small toggle" id="btnKleur" title="Provincies in kleur (uit = blinde kaart)">Kleur</button>
     <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
   </header>
@@ -37,11 +37,13 @@
   <div id="overlayTip" class="overlay hidden">
     <div class="dialog">
       <h2>Tip: de kaart van België</h2>
-      <p>Tik op een <b>bolletje</b> om de naam van de provincie te tonen, op een <b>sterretje</b> voor de hoofdstad
+      <p>Tik op een <b>provincie</b> om haar naam te tonen, op een <b>sterretje</b> voor de hoofdstad
         en op een <b>rivier</b> om ze duidelijk te kleuren met haar naam. Nog eens tikken verbergt de naam.
         Het grote gele sterretje is Brussel, de hoofdstad van België.</p>
       <p>Laat de klas eerst raden: "Welke provincie is dit? Wat is de hoofdstad?" Tik dan om te controleren.
         Zet <b>Kleur</b> uit voor een blinde kaart.</p>
+      <p><b>Gewesten</b> legt de drie gewesten over de kaart: welke provincies horen bij het Vlaams Gewest, welke bij
+        het Waals Gewest? Waar ligt het Brussels Hoofdstedelijk Gewest?</p>
       <p>Rivieren: in welke richting stromen ze? Welke rivier stroomt door Gent, door Luik, door Brussel?</p>
       <p class="hint">Brussel is geen provincie maar een gewest (het Brussels Hoofdstedelijk Gewest). De kaart is vereenvoudigd.
         Grenzen: Statbel via geoBoundaries. Rivieren: &copy; OpenStreetMap-bijdragers. Beide onder de ODbL-licentie.</p>

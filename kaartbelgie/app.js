@@ -1,5 +1,5 @@
 /* Kaart van België – OpenBoard-widget
- * Provincies in kleur met een bolletje (tik = naam), hoofdsteden met een sterretje (tik = naam),
+ * Provincies in kleur (tik op de provincie = naam), hoofdsteden met een sterretje (tik = naam), gewesten als laag,
  * rivieren discreet (tik = duidelijk blauw met naam). Per laag alle namen tonen of verbergen.
  * Kaartgegevens in kaart.js (gemaakt door scripts/kaart_belgie.py).
  */
@@ -12,6 +12,15 @@
     wbr: '#9fd8c8', hen: '#cfe6a8', nam: '#eab6dc', lui: '#ffbf94', lux: '#c4d6b4' };
   var RAND = { wvl: '#c2185b', ovl: '#c26a00', ant: '#6a40b0', lim: '#3b7d18', vbr: '#9a7b00', bru: '#c62828',
     wbr: '#1d7d68', hen: '#5b7f1f', nam: '#9c3f86', lui: '#c2561a', lux: '#4f6b3a' };
+  var GEWESTEN = {
+    vl: { naam: 'Vlaams Gewest', rand: '#b88a00', tint: '#ffd43b', groot: 24, plek: [[3.62, 51.28], [4.75, 51.32], [3.4, 51.0], [5.0, 51.05]] },
+    wa: { naam: 'Waals Gewest', rand: '#c62828', tint: '#ff6b6b', groot: 24, plek: [[4.9, 50.08], [4.4, 50.2], [5.3, 50.2], [5.6, 49.9]] },
+    bru: { naam: 'Brussels Hoofdstedelijk Gewest', rand: '#1f5fbf', tint: '#4c8dff', groot: 17, plek: [[4.35, 50.93], [4.35, 50.77], [4.0, 50.9], [4.7, 50.8]] }
+  };
+  // provincies in tinten van hun gewest (met Gewesten aan)
+  var GKLEUR = { wvl: '#ffe48a', ovl: '#ffd043', ant: '#ffe48a', vbr: '#fff0b8', lim: '#ffd043', bru: '#8fb8ff',
+    hen: '#ffb3b3', wbr: '#ff9090', nam: '#ffd2d2', lui: '#ff9a9a', lux: '#ffb3b3' };
+  var GEWEST_VAN = { wvl: 'vl', ovl: 'vl', ant: 'vl', lim: 'vl', vbr: 'vl', bru: 'bru', wbr: 'wa', hen: 'wa', nam: 'wa', lui: 'wa', lux: 'wa' };
   var STER = '#b3261e', RIVIER = '#5b9bd5', RIVIER_AAN = '#1257b8', INK = '#18212f';
   var BUURLANDEN = [
     { t: 'Noordzee', lon: 2.72, lat: 51.47, zee: true }, { t: 'Nederland', lon: 6.42, lat: 51.38, a: 'end' },
@@ -21,6 +30,8 @@
 
   // ---------- Voorkeuren (OpenBoard bewaart ze per widget in het document) ----------
   // Sleutels: kleur ('1'|'0': provincies in kleur), prov / stad / riv ('1'|'0': laag tonen),
+  // (prov = bolletjes van de provincies; sinds 0.2 zijn er geen bolletjes meer en wordt prov niet meer gelezen),
+  // gewest ('1'|'0': gewesten tonen, sinds 0.2),
   // pnamen / snamen (provincie-id's met zichtbare naam, komma's), rnamen (namen van aangeklikte rivieren, komma's).
   // Nooit hernoemen of een andere betekenis geven: oude lessen bewaren deze waarden.
   var HAS_SANKORE = !!(window.sankore && typeof sankore.preference === 'function');
@@ -47,7 +58,7 @@
 
   var K = KAART;
   var state = {
-    kleur: prefGet('kleur', '1') !== '0', prov: prefGet('prov', '1') !== '0', stad: prefGet('stad', '1') !== '0',
+    kleur: prefGet('kleur', '1') !== '0', gewest: prefGet('gewest', '0') === '1', stad: prefGet('stad', '1') !== '0',
     riv: prefGet('riv', '1') !== '0', pnamen: lijst(prefGet('pnamen', '')), snamen: lijst(prefGet('snamen', '')),
     rnamen: lijst(prefGet('rnamen', ''))
   };
@@ -110,11 +121,28 @@
     for (i = 0; i < K.provincies.length; i++) el('path', { d: K.provincies[i].d, fill: '#5c677d', stroke: '#5c677d', 'stroke-width': 3.2, 'stroke-linejoin': 'round' }, land);
     for (i = 0; i < K.provincies.length; i++) {
       p = K.provincies[i];
-      el('path', { d: p.d, fill: state.kleur ? KLEUR[p.id] : '#f4f1ea', stroke: '#ffffff', 'stroke-width': state.kleur ? 1.6 : 1.2,
+      el('path', { d: p.d, fill: state.kleur ? (state.gewest ? GKLEUR[p.id] : KLEUR[p.id]) : '#f4f1ea', stroke: '#ffffff', 'stroke-width': state.kleur ? 1.6 : 1.2,
         'stroke-linejoin': 'round', 'data-role': 'prov', 'data-id': p.id, style: 'cursor:pointer' }, land);
     }
     if (!state.kleur) {
       for (i = 0; i < K.provincies.length; i++) el('path', { d: K.provincies[i].d, fill: 'none', stroke: '#9aa4b5', 'stroke-width': 1.2, 'pointer-events': 'none' }, land);
+    }
+
+    // gewesten: lichte kleur erover en een dikke rand
+    if (state.gewest) {
+      var gl = el('g', { 'pointer-events': 'none' }, svg), gw;
+      if (!state.kleur) { // blinde kaart: een lichte kleur per gewest
+        for (i = 0; i < K.provincies.length; i++) {
+          gw = GEWEST_VAN[K.provincies[i].id];
+          el('path', { d: K.provincies[i].d, fill: GEWESTEN[gw].tint, 'fill-opacity': 0.3, stroke: 'none' }, gl);
+        }
+      }
+      for (gw in GEWESTEN) if (GEWESTEN.hasOwnProperty(gw)) {
+        el('path', { d: K.gewesten[gw], fill: 'none', stroke: '#ffffff', 'stroke-width': 8, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, gl);
+      }
+      for (gw in GEWESTEN) if (GEWESTEN.hasOwnProperty(gw)) {
+        el('path', { d: K.gewesten[gw], fill: 'none', stroke: GEWESTEN[gw].rand, 'stroke-width': 4.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'data-gewest': gw }, gl);
+      }
     }
 
     // rivieren
@@ -132,16 +160,7 @@
       }
     }
 
-    // bolletjes en sterren
-    if (state.prov) {
-      for (i = 0; i < K.provincies.length; i++) {
-        p = K.provincies[i];
-        if (p.id === 'bru') continue; // Brussel: tik op het gewest of op de ster
-        var gr = el('g', { 'data-role': 'prov', 'data-id': p.id, style: 'cursor:pointer' }, svg);
-        el('circle', { cx: p.x, cy: p.y, r: 15, fill: '#ffffff', 'fill-opacity': 0.01 }, gr);
-        el('circle', { cx: p.x, cy: p.y, r: 8.5, fill: '#ffffff', stroke: RAND[p.id], 'stroke-width': 4, 'class': 'bol' }, gr);
-      }
-    }
+    // sterren
     if (state.stad) {
       for (i = 0; i < K.provincies.length; i++) {
         p = K.provincies[i];
@@ -155,17 +174,22 @@
     var nl = el('g', { 'pointer-events': 'none' }, svg), bezet = [], j;
     for (i = 0; i < K.provincies.length; i++) {
       p = K.provincies[i];
-      if (state.prov && p.id !== 'bru') bezet.push(vak(p.x, p.y, 11));
       if (state.stad) bezet.push(vak(p.sx, p.sy, p.id === 'bru' ? 15 : 11));
     }
-    if (state.prov) {
-      for (i = 0; i < K.provincies.length; i++) {
-        p = K.provincies[i];
-        if (!state.pnamen[p.id]) continue;
-        var bru = p.id === 'bru', naam = bru ? 'Brussels Gewest' : p.naam, fp = bru ? 15 : 20;
-        var bx = bru ? p.sx : p.x, by = bru ? p.sy : p.y;
-        zet(nl, bezet, naam, fp, INK, rondom(bx, by, bru ? 16 : 12, naam, fp), { 'data-naam': 'prov:' + p.id }, false);
+    if (state.gewest) {
+      for (var gn in GEWESTEN) if (GEWESTEN.hasOwnProperty(gn)) {
+        var G = GEWESTEN[gn], gc = [];
+        for (j = 0; j < G.plek.length; j++) { var q2 = proj(G.plek[j][0], G.plek[j][1]); gc.push([q2.x, q2.y]); }
+        zet(nl, bezet, G.naam, G.groot, G.rand, gc, { 'data-naam': 'gewest:' + gn }, false);
       }
+    }
+    for (i = 0; i < K.provincies.length; i++) {
+      p = K.provincies[i];
+      if (!state.pnamen[p.id]) continue;
+      var bru = p.id === 'bru', naam = bru ? 'Brussels Gewest' : p.naam, fp = bru ? 15 : 20;
+      // eerst in het midden van de provincie, anders er rond
+      var pc = bru ? rondom(p.sx, p.sy, 16, naam, fp) : [[p.x, p.y + 7]].concat(rondom(p.x, p.y, 10, naam, fp));
+      zet(nl, bezet, naam, fp, INK, pc, { 'data-naam': 'prov:' + p.id }, false);
     }
     if (state.stad) {
       for (i = 0; i < K.provincies.length; i++) {
@@ -210,10 +234,9 @@
 
     // knoppen
     $('btnKleur').className = 'btn small toggle' + (state.kleur ? ' on' : '');
-    $('btnLaagProv').className = 'btn small toggle' + (state.prov ? ' on' : '');
+    $('btnLaagGewest').className = 'btn small toggle' + (state.gewest ? ' on' : '');
     $('btnLaagStad').className = 'btn small toggle' + (state.stad ? ' on' : '');
     $('btnLaagRiv').className = 'btn small toggle' + (state.riv ? ' on' : '');
-    $('btnAlleProv').disabled = !state.prov;
     $('btnAlleStad').disabled = !state.stad;
     $('btnAlleRiv').disabled = !state.riv;
     $('btnAlleProv').textContent = alle(state.pnamen, K.provincies, 'id') ? 'Provincies verbergen' : 'Alle provincies';
@@ -290,7 +313,6 @@
   function tik(n) {
     var role = n.getAttribute('data-role'), id = n.getAttribute('data-id');
     var o = role === 'prov' ? state.pnamen : role === 'stad' ? state.snamen : state.rnamen;
-    if (role === 'prov' && !state.prov) return;
     o[id] = !o[id];
     bewaar();
     render();
@@ -335,7 +357,7 @@
   }
   function init() {
     on('btnKleur', function () { state.kleur = !state.kleur; prefSet('kleur', state.kleur ? '1' : '0'); render(); });
-    laag('prov', 'btnLaagProv');
+    laag('gewest', 'btnLaagGewest');
     laag('stad', 'btnLaagStad');
     laag('riv', 'btnLaagRiv');
     on('btnAlleProv', function () { wissel(state.pnamen, K.provincies, 'id'); bewaar(); render(); });
