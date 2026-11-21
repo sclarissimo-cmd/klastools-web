@@ -10,7 +10,8 @@ var RUBRIEKEN = [
   { id: 'samen', naam: 'Leerlingen doen mee', uitleg: 'Iedereen antwoordt, met een eigen toestel of door handen te tellen.' },
   { id: 'getallen', naam: 'Rekenen – getallen', uitleg: 'Getallen en breuken zichtbaar maken.' },
   { id: 'meten', naam: 'Rekenen – meten en tijd', uitleg: 'Klok, geld en maten.' },
-  { id: 'taal', naam: 'Taal', uitleg: 'Woorden, letters en zinnen.' }
+  { id: 'taal', naam: 'Taal', uitleg: 'Woorden, letters en zinnen.' },
+  { id: 'wero', naam: 'Wereldoriëntatie', uitleg: 'Kaarten en de wereld rondom.' }
 ];
 
 var TOOLS = [
@@ -37,5 +38,7 @@ var TOOLS = [
   { map: 'geld', naam: 'Geld', rubriek: 'meten', jaren: [1, 6],
     tekst: 'Geldbordje met euromunten en -biljetten: leggen en tellen, een bedrag leggen met zo weinig mogelijk stukken, wisselgeld teruggeven.' },
   { map: 'letterbord', naam: 'Letterbord', rubriek: 'taal', jaren: [1, 2],
-    tekst: 'Klanken en letters samen leggen tot woorden, hakken en plakken. Het woord eronder in Vlaams handschrift, drukletters of getypt.' }
+    tekst: 'Klanken en letters samen leggen tot woorden, hakken en plakken. Het woord eronder in Vlaams handschrift, drukletters of getypt.' },
+  { map: 'kaartbelgie', naam: 'Kaart van België', rubriek: 'wero', jaren: [3, 6],
+    tekst: 'De provincies in kleur, de hoofdsteden en de belangrijkste rivieren. Tik om de namen te tonen, of toon ze allemaal.' }
 ];
