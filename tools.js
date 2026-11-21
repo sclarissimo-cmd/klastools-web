@@ -28,6 +28,8 @@ var TOOLS = [
     tekst: 'Honderdveld van 10 x 10 met gekleurde bollen. Kleur een vakje of meteen een hele rij.' },
   { map: 'splitsmachine', naam: 'Splitsmachine', rubriek: 'getallen', jaren: [1, 2],
     tekst: 'Getallen tot 10 of tot 20 splitsen met bolletjes of cijfers, stap voor stap of automatisch. Met splitshuis.' },
+  { map: 'getalkaarten', naam: 'Getalkaarten', rubriek: 'getallen', jaren: [1, 4],
+    tekst: 'Kaarten voor duizendtallen, honderdtallen, tientallen en eenheden op elkaar leggen tot één getal. Willekeurig of zelf gekozen getal.' },
   { map: 'breuken', naam: 'Breuken', rubriek: 'getallen', jaren: [3, 6],
     tekst: 'Chocoladerepen en taarten in gelijke stukken, met de breuk en het percent erbij.' },
   { map: 'klok', naam: 'Klok', rubriek: 'meten', jaren: [1, 4],
