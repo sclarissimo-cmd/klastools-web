@@ -40,5 +40,7 @@ var TOOLS = [
   { map: 'letterbord', naam: 'Letterbord', rubriek: 'taal', jaren: [1, 2],
     tekst: 'Klanken en letters samen leggen tot woorden, hakken en plakken. Het woord eronder in Vlaams handschrift, drukletters of getypt.' },
   { map: 'kaartbelgie', naam: 'Kaart van België', rubriek: 'wero', jaren: [3, 6],
-    tekst: 'De provincies in kleur, de hoofdsteden en de belangrijkste rivieren. Tik om de namen te tonen, of toon ze allemaal.' }
+    tekst: 'De provincies in kleur, de hoofdsteden en de belangrijkste rivieren. Tik om de namen te tonen, of toon ze allemaal.' },
+  { map: 'kaarteuropa', naam: 'Kaart van Europa', rubriek: 'wero', jaren: [4, 6],
+    tekst: 'De landen en hun hoofdsteden, en welke landen bij de Europese Unie horen. Tik om de namen te tonen, of toon alles in één klik.' }
 ];
