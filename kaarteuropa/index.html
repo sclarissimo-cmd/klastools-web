@@ -13,7 +13,9 @@
     <div class="brand"><img src="icon.svg" alt=""> Kaart van Europa</div>
     <span class="grow"></span>
     <button class="btn small toggle" id="btnLaagStad" title="Sterretjes van de hoofdsteden tonen">Hoofdsteden</button>
-    <button class="btn small toggle" id="btnEU" title="De lidstaten van de Europese Unie kleuren">Europese Unie</button>
+    <button class="btn small toggle" id="btnEU" title="De lidstaten van de Europese Unie kleuren">EU</button>
+    <button class="btn small toggle" id="btnLaagRiv" title="De grootste rivieren tonen">Rivieren</button>
+    <button class="btn small toggle" id="btnLaagBerg" title="De grootste gebergten tonen">Gebergten</button>
     <button class="btn small toggle" id="btnKleur" title="Landen in kleur (uit = blinde kaart)">Kleur</button>
     <button class="icon-btn" id="btnTip" title="Didactische tip" aria-label="Didactische tip">?</button>
   </header>
@@ -28,8 +30,10 @@
     <span class="show-label">Namen</span>
     <button class="btn" id="btnAlleLand" title="Alle namen van de landen tonen of verbergen">Alle landen</button>
     <button class="btn" id="btnAlleStad" title="Alle hoofdsteden tonen of verbergen">Alle hoofdsteden</button>
+    <button class="btn" id="btnAlleRiv" title="Alle rivieren met hun naam tonen of verbergen">Alle rivieren</button>
+    <button class="btn" id="btnAlleBerg" title="Alle gebergten met hun naam tonen of verbergen">Alle gebergten</button>
     <span class="grow"></span>
-    <button class="btn primary" id="btnAlles" title="In één keer alle namen van landen en hoofdsteden tonen of verbergen">Alle namen</button>
+    <button class="btn primary" id="btnAlles" title="In één keer alle namen tonen of verbergen (landen, hoofdsteden en de lagen die aan staan)">Alle namen</button>
   </footer>
 
   <div id="overlayTip" class="overlay hidden">
@@ -38,11 +42,13 @@
       <p>Tik op een <b>land</b> om zijn naam te tonen en op een <b>sterretje</b> voor de hoofdstad. Nog eens tikken verbergt
         de naam. Heel kleine landen (zoals Luxemburg, Monaco of Malta) hebben een rondje; met "Alle hoofdsteden" zie je ook
         hun hoofdstad.</p>
-      <p>Zet <b>Europese Unie</b> aan: welke landen zijn lid? Zijn alle buurlanden van België lid? Zet <b>Kleur</b> uit
+      <p><b>Rivieren</b> en <b>Gebergten</b> tonen de grootste rivieren en gebergten. Tik op een rivier of op het bruine
+        driehoekje van een gebergte voor de naam. Door welke landen stroomt de Donau? Welk gebergte ligt tussen Spanje en Frankrijk?</p>
+      <p>Zet <b>EU</b> aan: welke landen zijn lid? Zijn alle buurlanden van België lid? Zet <b>Kleur</b> uit
         voor een blinde kaart.</p>
-      <p><b>Alle namen</b> toont of verbergt in één keer alle landen en hoofdsteden.</p>
+      <p><b>Alle namen</b> toont of verbergt in één keer alle namen van wat op de kaart staat.</p>
       <p class="hint">De kaart is vereenvoudigd. Landsgrenzen: Natural Earth (publiek domein). De Europese Unie telt
-        27 lidstaten (stand 2026).</p>
+        27 lidstaten (stand 2026). Rivieren en gebergten: ook Natural Earth.</p>
       <div class="dialog-actions"><button class="btn primary" id="btnTipClose">Sluiten</button></div>
     </div>
   </div>
